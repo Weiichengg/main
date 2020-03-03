@@ -18,7 +18,7 @@ public class AddressBookBuilder {
 
     public AddressBookBuilder(AddressBook addressBook) {
         this.addressBook = addressBook;
-    }
+    } // latest update
 
     /**
      * Adds a new {@code Person} to the {@code AddressBook} that we are building.

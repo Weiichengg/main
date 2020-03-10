@@ -4,7 +4,6 @@ import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
@@ -13,13 +12,10 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
-import seedu.address.logic.commands.ToggleView;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.hirelah.Interviewee;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -35,15 +31,9 @@ public class MainWindow extends UiPart<Stage> {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private IntervieweeListPanel intervieweeListPanel;
-    private TranscriptListPanel transcriptListPanel;
-    private AttributeListPanel attributeListPanel;
-    private QuestionListPanel questionListPanel;
-    private DetailedIntervieweeCard detailedIntervieweeCard;
+    private PersonListPanel personListPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
-
-    private ToggleView toggleView = ToggleView.INT;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -52,7 +42,7 @@ public class MainWindow extends UiPart<Stage> {
     private MenuItem helpMenuItem;
 
     @FXML
-    private StackPane listPanelStackPane;
+    private StackPane personListPanelPlaceholder;
 
     @FXML
     private StackPane resultDisplayPlaceholder;
@@ -73,9 +63,6 @@ public class MainWindow extends UiPart<Stage> {
         setAccelerators();
 
         helpWindow = new HelpWindow();
-        intervieweeListPanel = new IntervieweeListPanel(logic.getFilteredIntervieweeList());
-        attributeListPanel = new AttributeListPanel(logic.getAttributeList());
-        questionListPanel = new QuestionListPanel(logic.getQuestionList());
     }
 
     public Stage getPrimaryStage() {
@@ -120,7 +107,8 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        listPanelStackPane.getChildren().add(intervieweeListPanel.getRoot());
+        personListPanel = new PersonListPanel(logic.getFilteredPersonList());
+        personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -142,43 +130,6 @@ public class MainWindow extends UiPart<Stage> {
             primaryStage.setX(guiSettings.getWindowCoordinates().getX());
             primaryStage.setY(guiSettings.getWindowCoordinates().getY());
         }
-    }
-
-    /**
-     * Sets what is displayed in the listPanelStackPane based on the toggle.
-     * @param toggleView enum representing what should be displayed
-     */
-    @FXML
-    public void handleToggle(ToggleView toggleView) throws IllegalValueException {
-        if (this.toggleView == toggleView) {
-            return;
-        }
-
-        primaryStage.hide();
-        listPanelStackPane.getChildren().removeAll();
-        switch (toggleView){
-            case ATT: // attribute
-            listPanelStackPane.getChildren().add(attributeListPanel.getRoot());
-            break;
-
-            case QNS: // questions
-            listPanelStackPane.getChildren().add(questionListPanel.getRoot());
-            break;
-
-            case TRP: // transcript
-            transcriptListPanel = new TranscriptListPanel(logic.getTranscriptList(new Interviewee("Test name",
-                    10086)));
-            detailedIntervieweeCard = new DetailedIntervieweeCard(new Interviewee("Test name",
-                    10086));
-            listPanelStackPane.getChildren().addAll(transcriptListPanel.getRoot(), detailedIntervieweeCard.getRoot());
-            StackPane.setAlignment(detailedIntervieweeCard.getRoot(), Pos.TOP_CENTER);
-            break;
-
-            case INT: // interviewee
-            listPanelStackPane.getChildren().add(intervieweeListPanel.getRoot());
-            break;
-        }
-        primaryStage.show();
     }
 
     /**
@@ -209,6 +160,9 @@ public class MainWindow extends UiPart<Stage> {
         primaryStage.hide();
     }
 
+    public PersonListPanel getPersonListPanel() {
+        return personListPanel;
+    }
 
     /**
      * Executes the command and returns the result.
@@ -228,17 +182,6 @@ public class MainWindow extends UiPart<Stage> {
             if (commandResult.isExit()) {
                 handleExit();
             }
-
-            /*
-              @todo
-              getToggleView to return a ToggleView enum representing the list to display:
-              ATT: AttributeList
-              QNS: QuestionList
-              TRP: Transcript for an interviewee (inclusive of detailed interviewee information,
-                   managed by DetailedInterviewCard)
-              INT: Filtered Interviewee list
-             */
-            handleToggle(commandResult.getToggleView());
 
             return commandResult;
         } catch (CommandException | ParseException e) {

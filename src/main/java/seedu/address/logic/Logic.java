@@ -8,10 +8,6 @@ import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.hirelah.Attribute;
-import seedu.address.model.hirelah.Interviewee;
-import seedu.address.model.hirelah.Question;
-import seedu.address.model.hirelah.Transcript;
 import seedu.address.model.person.Person;
 
 /**
@@ -36,23 +32,6 @@ public interface Logic {
 
     /** Returns an unmodifiable view of the filtered list of persons */
     ObservableList<Person> getFilteredPersonList();
-
-    /** Returns an unmodifiable view of the list of attributes */
-    ObservableList<Attribute> getAttributeList();
-
-    /** Returns an unmodifiable view of the filtered list of interviewees */
-    ObservableList<Interviewee> getFilteredIntervieweeList();
-
-    /** Returns an unmodifiable view of the list of questions */
-    ObservableList<Question> getQuestionList();
-
-    /** Returns an unmodifiable view of the transcripts entries of an interviewee.
-     *
-     * @param interviewee The interviewee whose transcript we are interested in
-     */
-    ObservableList<Transcript> getTranscriptList(Interviewee interviewee);
-
-
 
     /**
      * Returns the user prefs' address book file path.

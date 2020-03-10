@@ -1,4 +1,4 @@
-= HireLah! - User Guide
+= AddressBook Level 3 - User Guide
 :site-section: UserGuide
 :toc:
 :toc-title:
@@ -12,517 +12,166 @@ ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
 endif::[]
-:repoURL: https://github.com/AY1920S2-CS2103-W15-2/main
+:repoURL: https://github.com/se-edu/addressbook-level3
 
-By: `AY1920S2-W15-2`      Since: `Feb 2020`
+By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
 
 == Introduction
 
-HireLah! is targeted to bring greater convenience to interviewers who
-can type quickly and prefer typing over mouse commands. Additionally, we
-included customised features in our desktop apps to help interviewers to
-manage interviews.
+AddressBook Level 3 (AB3) is for those who *prefer to use a desktop app for managing contacts*. More importantly, AB3 is *optimized for those who prefer to work with a Command Line Interface* (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps. Interested? Jump to the <<Quick Start>> to get started. Enjoy!
 
 == Quick Start
-.  Ensure you have Java 11 or above installed in your Computer.
-.  Download the latest `HireLah.jar` link:{repoURL}/releases[here].
-.  Copy the file to the folder you want to use as the home folder for your HireLah!.
+
+.  Ensure you have Java `11` or above installed in your Computer.
+.  Download the latest `addressbook.jar` link:{repoURL}/releases[here].
+.  Copy the file to the folder you want to use as the home folder for your Address Book.
 .  Double-click the file to start the app. The GUI should appear in a few seconds.
-
++
 image::Ui.png[width="790"]
++
+.  Type the command in the command box and press kbd:[Enter] to execute it. +
+e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
+.  Some example commands you can try:
 
+* *`list`* : lists all contacts
+* **`add`**`n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : adds a contact named `John Doe` to the Address Book.
+* **`delete`**`3` : deletes the 3rd contact shown in the current list
+* *`exit`* : exits the app
+
+.  Refer to <<Features>> for details of each command.
+
+[[Features]]
 == Features
 
-=== Start Session
+====
+*Command Format*
 
-You can select, view, or delete interview sessions from a list of
-existing interview sessions to continue from an interview you left off
-previously, or you can create a new interview session from scratch.
+* Words in `UPPER_CASE` are the parameters to be supplied by the user e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+* Items in square brackets are optional e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
+* Items with `…`​ after them can be used multiple times including zero times e.g. `[t/TAG]...` can be used as `{nbsp}` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
+* Parameters can be in any order e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+====
 
-*Command*
+=== Viewing help : `help`
 
-....
-view session <session>
-delete session <session>
-start session <session>
-new session <session>
-....
+Format: `help`
 
-*Example*
+=== Adding a person: `add`
 
-....
-view session
-new session CEOInterview
-....
+Adds a person to the address book +
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...`
 
-_Action:_ views existing interview sessions, followed by creating and
-starting a new interview session named "CEOInterview"
+[TIP]
+A person can have any number of tags (including 0)
 
-_Output:_
+Examples:
 
-....
-You have 1 existing interview session:
-JanitorInterview
+* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
-Started new interview session: CEOInterview
-....
+=== Listing all persons : `list`
 
-=== Initialization Phase
+Shows a list of all persons in the address book. +
+Format: `list`
 
-==== Add and Delete Interviewees
+=== Editing a person : `edit`
 
-You can add more interviewees to the list so that you can keep their
-details easily. You can also delete the interviewees, who may have
-withdrawn their application by referring to either their full name,
-aliases, or assigned ID.
+Edits an existing person in the address book. +
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]...`
 
-*Command*
+****
+* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index *must be a positive integer* 1, 2, 3, ...
+* At least one of the optional fields must be provided.
+* Existing values will be updated to the input values.
+* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
+* You can remove all the person's tags by typing `t/` without specifying any tags after it.
+****
 
-....
-new interviewee <fullname> [-a <alias>]
-delete interviewee <interviewee>
-list interviewee
-....
+Examples:
 
-*Execution Example*
+* `edit 1 p/91234567 e/johndoe@example.com` +
+Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
+* `edit 2 n/Betsy Crower t/` +
+Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 
-....
-> new interviewee Jane Doe -a Doe
-> list interviewee
-> delete interviewee Doe
-....
+=== Locating persons by name: `find`
 
-_Action:_ Interviewee Jane Doe with alias of Doe is first created and
-then deleted via her alias
+Finds persons whose names contain any of the given keywords. +
+Format: `find KEYWORD [MORE_KEYWORDS]`
 
-_Output:_
+****
+* The search is case insensitive. e.g `hans` will match `Hans`
+* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
+* Only the name is searched.
+* Only full words will be matched e.g. `Han` will not match `Hans`
+* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+****
 
-....
-The following interviewee has been added:
-  1. Jane Doe (alias: Doe)
+Examples:
 
-These are the current interviewees:
-  1. Jane Doe (alias: Doe)
+* `find John` +
+Returns `john` and `John Doe`
+* `find Betsy Tim John` +
+Returns any person having names `Betsy`, `Tim`, or `John`
 
-The following interviewee has been deleted:
-  1. Jane Doe (alias: Doe)
-....
+// tag::delete[]
+=== Deleting a person : `delete`
 
-==== Add, Update and Delete Attributes
+Deletes the specified person from the address book. +
+Format: `delete INDEX`
 
-*Command*
+****
+* Deletes the person at the specified `INDEX`.
+* The index refers to the index number shown in the displayed person list.
+* The index *must be a positive integer* 1, 2, 3, ...
+****
 
-....
-> new attribute <attribute>
-> update attribute <attribute> <new attribute>
-> delete attribute <attribute>
-> list attribute
-....
+Examples:
 
-*Execution Example*
+* `list` +
+`delete 2` +
+Deletes the 2nd person in the address book.
+* `find Betsy` +
+`delete 1` +
+Deletes the 1st person in the results of the `find` command.
 
-....
-> new attribute teamwork
-> new attribute leadership
-> update attribute leadership leadership
-> list attribute
-> delete attribute teamwork
-....
+// end::delete[]
+=== Clearing all entries : `clear`
 
-_Action:_ teamwork and leadership is first added. Leadership is updated
-to leadership, and then teamwork is deleted.
+Clears all entries from the address book. +
+Format: `clear`
 
-_Output:_
+=== Exiting the program : `exit`
 
-....
-Attribute “teamwork” added
+Exits the program. +
+Format: `exit`
 
-Attribute “leadership” added
+=== Saving the data
 
-Attribute “leadership” changed to “leadership”
+Address book data are saved in the hard disk automatically after any command that changes the data. +
+There is no need to save manually.
 
-These are the current attributes:
-  1. teamwork
-  2. leadership
+// tag::dataencryption[]
+=== Encrypting data files `[coming in v2.0]`
 
-Attribute “teamwork” removed. You have now 1 attribute for your interview.
-....
-
-==== Add, Update and Delete Interview Questions
-
-Before the interview process, the interviewer may one to review the
-questions. During review process, the interviewer may wants to add more
-questions, remove the unnecessary questions and to edit the existing
-questions.
-
-*Command*
-
-....
-new question <question>
-update question <question number> <updated question>
-list question
-delete question <question number>
-....
-
-*Example*
-
-....
-> new question What are your relevant experiences?
-> update question 1 What do you hope to accomplish in 5 years?
-> update question 2 How can you add value to the company?
-> list question
-> delete question 1
-....
-
-_Output:_
-
-....
-The following question has been added:
-  2. What are your relevant experiences?
-
-Question 1 updated
-
-Question 2 updated
-
-These are the current questions:
-  1. What do you hope to accomplish in 5 years?
-  2. How can you add value to the company?
-
-The following question was deleted:
-  1. What do you hope to accomplish in 5 years?
-....
-
-=== Interview Phase
-
-==== Start Interview
-
-You can start a specific interview session and it will enter the
-interview phase. It will capture all the remarks and answers that you
-type in during this interview session. It will also start the audio
-recorder to record the whole interview session.
-
-The details of this interviewee that you have created during the
-initialization phase will be shown.
-
-*Command*
-
-....
-start interview <name>
-....
-
-*Example*
-
-....
-> start interview Jane Doe
-....
-
-_Action:_ Initializes an interview session with Jane. Shows the uploaded
-CV (if any), and the list of interview questions in separate windows
-
-==== View Interview Questions
-
-You can view the interview questions that you have set up for this
-interview session, to be asked to the interviewees.
-
-*Command*
-
-....
-view questions
-....
-
-*Example*
-
-_Output:_
-
-....
-Questions
-Q1. What are your strengths and weaknesses?
-Q2. What are your relevant experiences as a software developer?
-Q3. What was your last salary?
-....
-
-==== Record Remarks
-
-You can add remarks throughout the interview sessions if you have any
-for the interviewee. This remarks will be mapped to the recording at
-this specific time such that you can remember what was discussed during
-this time.
-
-*Command*
-
-....
-<remarks>
-....
-
-*Example*
-
-....
-> Interesting family history, all of her family members are very rich.
-....
-
-_Action:_ Stores this remark and maps it to the specific time when you
-enter it.
-
-==== Start and End Mark of A Question
-
-You can indicate to start typing the answer for a question such that all
-the remarks that falls between the start and end of a question will be
-regarded as the answer to this question
-
-*Command*
-
-....
-:start q1
-<remarks>
-<remarks>
-:end q1
-....
-
-*Example*
-
-....
-> :start q1
-> Strengths: resilience, ambitious, good time-management
-> Weakness: perfectionist, not detail-oriented
-> :end q1
-....
-
-_Action:_ Stores these 2 lines of remark as the answer to Question 1.
-
-==== Score attributes
-
-Each of the interviewees have different scoring attributes and the
-interviewer could update the attributes anytime during the interview.
-
-*Command*
-
-....
-:<attributes> <score>
-....
-
-*Example*
-
-....
-> :Productivity 5
-....
-
-_Action:_ update the Productivity score for John Doe.
-
-==== End interview
-
-This is to allow the interviewers to end the interview session.
-
-*Command*
-
-....
-end
-....
-
-*Example*
-
-....
-> end
-....
-
-_Action:_ Ending the interview session.
-
-_Output_:
-
-....
-The interview session has ended.
-....
-
-=== Decision Phase
-
-==== Viewing Interviewee Reports
-
-After interviewing a candidate, you can view the interview report any
-time by doing an open command, and we can close it after we finish
-examining the session.
-
-*Command*
-
-....
-open <interviewee>
-close <interviewee>
-....
-
-*Example*
-
-....
-> open John Doe
-
-... view some interview details ...
-
-> close John Doe
-....
-
-_Output_: The entire list of remarks made during the interview, with
-their timestamps.
-
-==== Working in an Interviewee Report
-
-After opening a report, you can scroll up and down to navigate through
-the remarks you made during the interview. In addition, you can zoom in
-on a particular moment in the interview by question number, or by the
-interview time.
-
-In addition to viewing the remarks, you can also playback the interview
-audio record by specifying the –audio flag.
-
-====== Navigating by Question Number
-
-Displays all the remarks made while the current interviewee was
-answering the given question, or plays back the audio from that period
-of time.
-
-*Command*
-
-....
-q<question number> [--audio]
-....
-
-*Example*
-
-....
-> q4
-....
-
-_Output_:
-
-....
-Question 4
-27.46 - Mentioned that he was fired from his previous job
-27.59 - Was uncomfortable to share the reasons
-....
-
-===== Navigating by Timestamp
-
-Scrolls the list of remarks to the given time, or plays back the audio
-from that moment.
-
-*Command*
-
-....
-at <time> [--audio]
-....
-
-*Example*
-
-....
-> at 30.00 --audio
-....
-
-_Action_: Plays audio starting at 30.00
-
-===== Stopping the Audio
-
-Stops an ongoing audio playback.
-
-*Command*
-
-....
-stop audio
-....
-
-==== Find Best Candidates
-
-After interviewing all the candidates, you can find the top n candidates
-based on either a particular attribute, the average of all the
-attributes. You can also make a weighted average for scoring.
-
-*Command*
-
-....
-new weightage <weightage_name>
-best <number of candidates>
-best <number of candidates> [-a <attribute>]
-best <number of candidates> [-w <weightage>]
-....
-
-*Example*
-
-....
-> best 3 -a courage
-> new weightage weight1
-ambition?
-> 0.4
-teamwork?
-> 0.6
-> best 5 -w weight1
-....
+_{explain how the user can enable/disable data encryption}_
+// end::dataencryption[]
 
 == FAQ
 
-Q: How do I transfer my data to another Computer? +
-A: Install the app in
-the other computer and overwrite the `/data` folder with `/data` folder that
-contains the data of your previous HireLah! folder.
+*Q*: How do I transfer my data to another Computer? +
+*A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Address Book folder.
 
 == Command Summary
 
-*Start Session*
-
-* `view session` +
-* `delete session <session>` +
-e.g. `delete session CEOInterview`
-* `start session <session>` +
-e.g. `start session CEOInterview`
-* `new session <session>` +
-e.g. `new session CEOInterview`
-
-*Initialization Phase*
-
-* `new interviewee <fullname> [-a <alias>]` +
-e.g. `new interviewee - Jane Doe -a Doe`
-* `delete interviewee <interviewee>` +
-e.g. `delete interviewee Doe`
-* `list interviewee`
-* `new attribute <attributes>` +
-e.g. `new attribute teamwork`
-* `update attribute <attributes>` +
-e.g. `update attribute leadership`
-* `delete attribute <attributes>` +
-e.g. `delete attribute productivity`
-* `list attribute`
-* `add question <question>` +
-e.g. `add question What are your relevant experiences?`
-* `update question <interviewee number> <updated question>` +
-e.g. `update question 1 What do you hope to accomplish in 5 years?`
-* `list question`
-* `delete question <question number>` +
-e.g. `delete question 1`
-
-*Interviewing Phase*
-
-* Start: `start interview <name>` +
-e.g. `start interview Jane Doe`
-* View Questions: `view questions`
-* Add Remarks: `remarks` +
-e.g. `This guy is good at bluffing`
-* Start a Question: `:start q<no_of_question>` +
-e.g. `:start q1`
-* End a question: `:end q<no_of_question>` +
-e.g. `:end q1`
-* Score an attribute: `:<attribute> <score>` +
-e.g. `:Agility 10`
-* End: `end`
-
-*Decision Phase*
-
-* Open an interviewee report: `open <interviewee>` +
-e.g. `open Jane Doe`
-* Close an interviewee report: `close <interviewee>` +
-e.g. `close Jane Doe`
-* Navigate to answer of interviewee: `q<question number> [--audio]` +
-e.g. `q4`
-* Navigate to a time of interviewee: `at <time> [--audio]` +
-e.g. `at 30.00 –audio`
-* Stops audio playing: `stop audio`
-* Create a new weightage: `new weightage <weightage_name>` +
-e.g. `new weightage extreme_intelligent`
-* Find the Best N candidates based on average attribute: `best <no_of_candidates>`
-* Find the Best N candidates based on a particular attribute: `best <no_of_candidates> -p <attribute>` +
-e.g. `best 3 strength`
-* Find the Best N candidates based on a weighted attribute: `best <no_of_candidates> -w <weightage>` +
-e.g. `best 5 -w weightage1`
+* *Add* `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...` +
+e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
+* *Clear* : `clear`
+* *Delete* : `delete INDEX` +
+e.g. `delete 3`
+* *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...` +
+e.g. `edit 2 n/James Lee e/jameslee@example.com`
+* *Find* : `find KEYWORD [MORE_KEYWORDS]` +
+e.g. `find James Jake`
+* *List* : `list`
+* *Help* : `help`

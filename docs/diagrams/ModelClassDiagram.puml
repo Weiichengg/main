@@ -4,7 +4,7 @@ skinparam arrowThickness 1.1
 skinparam arrowColor MODEL_COLOR
 skinparam classBackgroundColor MODEL_COLOR
 
-Package Model <<Rectangle>>{
+Package Model <<Rectangle>> {
 Interface Model <<Interface>>
 Interface ObservableList <<Interface>>
 Class Session
@@ -20,64 +20,73 @@ Class ID
 Class Name
 Class CV
 Class Transcript
-Class UniqueIntervieweeList
+Class IntervieweeList
 }
 
 Package Question {
 Class Question
-Class QuestionName
-Class Number
-Class Answer
-Class UniqueQuestionList
+Class QuestionDescription
+Class QuestionList
 }
 
 Package Attribute {
 Class Attribute
 Class AttributeName
-Class UniqueAttributeList
+Class AttributeList
 }
 
 Package Metric {
-Class UniqueMetricList
+Class MetricList
 Class Metric
+Class MetricName
+Class AttributeToWeightMap
 }
 
 Package Transcript {
 Class Transcript
-Class RemarksMap
-Class Audio
+Class RemarkList
+Class AttributeToScoreMap
 }
 
-Class HiddenOutside #FFFFFF
-HiddenOutside ..> Model
+Session --> Storage
 
 ModelManager .up.|> Model
 Model .right.> ObservableList
-ModelManager o--> "1" Session
 ModelManager o-left-> "1" UserPrefs
 UserPrefs .up.|> ReadOnlyUserPrefs
 
-Session *--> "1" UniqueIntervieweeList
-UniqueIntervieweeList o--> "*" Interviewee
+ModelManager *-right-> "1" Session
+ModelManager *-right-> "1" AppPhase
+
+ModelManager *--> "1" AttributeList
+AttributeList o--> "*" Attribute
+Attribute *--> AttributeName
+
+ModelManager *--> "1" QuestionList
+QuestionList o--> "*" Question
+Question *--> QuestionDescription
+
+ModelManager *--> "1" MetricList
+MetricList o--> "*" Metric
+Metric *--> "1" MetricName
+Metric *--> "1" AttributeToWeightMap
+}
+
+ModelManager *--> "1" IntervieweeList
+IntervieweeList o--> "*" Interviewee
 Interviewee *--> Name
 Interviewee *--> Alias
 Interviewee *--> ID
 Interviewee *--> CV
-Interviewee *--> "*" Transcript
-Transcript *--> RemarksMap
-Transcript *--> Audio
+Interviewee *-up-> "*" Transcript
+Transcript *--> RemarkList
+Transcript *--> AttributeToScoreMap
 
-Session *--> "1" UniqueAttributeList
-UniqueAttributeList o--> "*" Attribute
-Attribute *--> AttributeName
+Package Storage {
+Class HiddenStorage #FFFFFF
+}
 
-Session *--> "1" UniqueQuestionList
-UniqueQuestionList o--> "*" Question
-Question *--> QuestionName
-Question *--> Number
-Question *--> Answer
-
-Session *--> "1" UniqueMetricList
-UniqueMetricList o--> "*" Metric
+Class HiddenOutside #FFFFFF
+HiddenOutside ..> Model
 
 @enduml

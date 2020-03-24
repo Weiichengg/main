@@ -19,7 +19,6 @@ import seedu.address.model.hirelah.IntervieweeList;
 import seedu.address.model.hirelah.MetricList;
 import seedu.address.model.hirelah.Question;
 import seedu.address.model.hirelah.QuestionList;
-import seedu.address.model.hirelah.Session;
 import seedu.address.model.hirelah.Transcript;
 
 /**
@@ -27,8 +26,6 @@ import seedu.address.model.hirelah.Transcript;
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
-
-    private Session session;
     private AppPhase appPhase;
     private final IntervieweeList intervieweeList;
     private final AttributeList attributeList;
@@ -94,16 +91,6 @@ public class ModelManager implements Model {
     }
 
     //=========== App state setters/getters ======================================================
-
-    @Override
-    public void setSession(Session session) {
-        this.session = session;
-    }
-
-    @Override
-    public Session getSession() {
-        return session;
-    }
 
     @Override
     public void setAppPhase(AppPhase phase) {

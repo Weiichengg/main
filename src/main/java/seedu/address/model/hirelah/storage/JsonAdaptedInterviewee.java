@@ -21,7 +21,7 @@ class JsonAdaptedInterviewee {
     private Optional<Transcript> interview;
 
     /**
-     * Constructs a {@code JsonAdaptedPerson} with the given person details.
+     * Constructs a {@code JsonAdaptedInterviewee} with the given person details.
      */
     @JsonCreator
     public JsonAdaptedInterviewee(Interviewee source) {

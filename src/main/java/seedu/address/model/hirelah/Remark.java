@@ -20,7 +20,7 @@ public class Remark {
      * @param message The remark message.
      * @param question The question associated with this remark as its answer.
      */
-    Remark(Instant time, String message, Question question) {
+    public Remark(Instant time, String message, Question question) {
         this.time = time;
         this.message = message;
         this.question = question;
@@ -57,6 +57,11 @@ public class Remark {
      */
     public Question getQuestion() {
         return question;
+    }
+
+    @Override
+    public String toString() {
+        return this.message;
     }
 
     @Override

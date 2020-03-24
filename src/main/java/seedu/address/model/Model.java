@@ -12,7 +12,6 @@ import seedu.address.model.hirelah.IntervieweeList;
 import seedu.address.model.hirelah.MetricList;
 import seedu.address.model.hirelah.Question;
 import seedu.address.model.hirelah.QuestionList;
-import seedu.address.model.hirelah.Session;
 import seedu.address.model.hirelah.Transcript;
 
 /**
@@ -73,12 +72,6 @@ public interface Model {
 
     /** Returns the list of metrics that describes certain weight */
     MetricList getMetricList();
-
-    /** Sets the current interview session */
-    void setSession(Session session);
-
-    /** Returns the session which contains data on where the session data is being stored */
-    Session getSession();
 
     /** Sets the current mode of the App */
     void setAppPhase(AppPhase phase);

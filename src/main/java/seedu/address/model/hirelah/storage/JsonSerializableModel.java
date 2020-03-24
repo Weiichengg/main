@@ -20,6 +20,7 @@ class JsonSerializableModel {
     private final List<JsonAdaptedInterviewee> interviewees = new ArrayList<>();
     private final List<JsonAdaptedAttributes> attributes = new ArrayList<>();
     private final List<JsonAdaptedQuestions> questions = new ArrayList<>();
+    private final List<JsonAdaptedMetric> metrics = new ArrayList<>();
 
     /**
      * Converts a given {@code ReadOnlyAddressBook} into this class for Jackson use.
@@ -33,6 +34,8 @@ class JsonSerializableModel {
                 .map(JsonAdaptedAttributes::new).collect(Collectors.toList()));
         interviewees.addAll(source.getFilteredIntervieweeListView().stream()
                 .map(JsonAdaptedInterviewee::new).collect(Collectors.toList()));
+        metrics.addAll(source.getMetricList().getObservableList().stream()
+                .map(JsonAdaptedMetric::new).collect(Collectors.toList()));
     }
 
     /**

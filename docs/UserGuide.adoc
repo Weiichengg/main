@@ -329,7 +329,7 @@ _Output:_
 Interview with Jane Doe started
 ....
 
-image::Screenshots/Finalise.png[]
+image::Screenshots/Interview.png[]
 
 ==== Record Remarks
 
@@ -529,6 +529,7 @@ open <interviewee>
 
 ....
 > open Jane Doe
+....
 
 _Action_: Shows the entire list of remarks made during the interview, with
 their timestamps.
@@ -635,7 +636,7 @@ Here are the best 2 interviewees.
 Here are the best 3 interviewees.
 ....
 
-image::Screenshots/NavigationTime.png[]
+image::Screenshots/Best.png[]
 
 == Advanced Features
 
@@ -756,6 +757,8 @@ e.g. `edit question 1 -q What do you hope to accomplish in 5 years?`
 * Delete a question: `delete question <question number>` +
 e.g. `delete question 1`
 * List questions: `list question`
+* Upload resume: `upload <interviewee> [-p <path>]
+* Open resume: `resume <interviewee>`
 
 *Interviewing Phase*
 
@@ -779,11 +782,10 @@ e.g. `close Jane Doe`
 e.g. `goto q4`
 * Navigate to a time of interviewee: `at <time>` +
 e.g. `goto 30.00`
-* Stops audio playing: `stop audio`
-* Create a new weightage: `new weightage <weightage_name>` +
-e.g. `new weightage extreme_intelligent`
+* Create a new metric: `add metric <weightage_name>` +
+e.g. `add metric -a ambition -w 0.9 -a leadership -w 0.1`
 * Find the Best N candidates based on average attribute: `best <no_of_candidates>`
 * Find the Best N candidates based on a particular attribute: `best <no_of_candidates> -a <attribute>` +
-e.g. `best 3 strength`
+e.g. `best 3 -a strength`
 * Find the Best N candidates based on a metric: `best <no_of_candidates> -m <metric>` +
 e.g. `best 5 -m extremeDictatorship`

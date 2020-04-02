@@ -8,6 +8,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.AttributeList;
+import seedu.address.model.hirelah.storage.Storage;
 
 /**
  * DeleteAttributeCommand describes the behavior when the
@@ -30,7 +31,7 @@ public class DeleteAttributeCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) throws CommandException {
+    public CommandResult execute(Model model, Storage storage) throws CommandException {
         requireNonNull(model);
         validateFinalisation(model, DESIRED_MODEL_FINALIZED_STATE);
         AttributeList attributes = model.getAttributeList();

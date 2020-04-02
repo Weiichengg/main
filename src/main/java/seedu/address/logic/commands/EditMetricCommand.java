@@ -10,6 +10,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.hirelah.AttributeList;
 import seedu.address.model.hirelah.MetricList;
+import seedu.address.model.hirelah.storage.Storage;
 
 /**
  * EditMetricCommand describes the behavior of HireLah!
@@ -40,7 +41,7 @@ public class EditMetricCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) throws CommandException {
+    public CommandResult execute(Model model, Storage storage) throws CommandException {
         requireNonNull(model);
         validateFinalisation(model, DESIRED_MODEL_FINALIZED_STATE);
         MetricList metrics = model.getMetricList();

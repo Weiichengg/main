@@ -1,9 +1,12 @@
 package seedu.address.logic.commands.interview;
 
+import java.io.IOException;
+
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.hirelah.storage.Storage;
 
 /**
  * Remark command is an Interview phase command that adds a Remark at the current interview time
@@ -19,8 +22,13 @@ public class RemarkCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) throws CommandException {
+    public CommandResult execute(Model model, Storage storage) throws CommandException {
         model.getCurrentTranscript().addRemark(this.remark);
+        try {
+            storage.saveTranscript(model.getCurrentInterviewee());
+        } catch (IOException e) {
+            throw new CommandException("Error occurred while saving data!");
+        }
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

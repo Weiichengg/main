@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.hirelah.storage.Storage;
 
 /**
  * Contains helper methods for testing commands.
@@ -20,9 +21,9 @@ public class CommandTestUtil {
      * - the {@code actualModel} matches {@code expectedModel}
      */
     public static void assertCommandSuccess(Command command, Model actualModel, CommandResult expectedCommandResult,
-            Model expectedModel) {
+            Model expectedModel, Storage storage) {
         try {
-            CommandResult result = command.execute(actualModel);
+            CommandResult result = command.execute(actualModel, storage);
             assertEquals(expectedCommandResult, result);
             assertEquals(expectedModel, actualModel);
         } catch (CommandException ce) {
@@ -31,13 +32,13 @@ public class CommandTestUtil {
     }
 
     /**
-     * Convenience wrapper to {@link #assertCommandSuccess(Command, Model, CommandResult, Model)}
+     * Convenience wrapper to {@link #assertCommandSuccess(Command, Model, CommandResult, Model, Storage)}
      * that takes a string {@code expectedMessage}.
      */
     public static void assertCommandSuccess(Command command, Model actualModel, String expectedMessage,
-            Model expectedModel) {
+            Model expectedModel, Storage storage) {
         CommandResult expectedCommandResult = new CommandResult(expectedMessage);
-        assertCommandSuccess(command, actualModel, expectedCommandResult, expectedModel);
+        assertCommandSuccess(command, actualModel, expectedCommandResult, expectedModel, storage);
     }
 
 }

@@ -7,6 +7,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.exceptions.IllegalActionException;
+import seedu.address.model.hirelah.storage.Storage;
 
 /**
  * Adds a pdf resume file to the given Interviewee.
@@ -25,7 +26,7 @@ public class UploadResumeCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) throws CommandException {
+    public CommandResult execute(Model model, Storage storage) throws CommandException {
         Interviewee interviewee;
         try {
             interviewee = model.getIntervieweeList().getInterviewee(identifier);

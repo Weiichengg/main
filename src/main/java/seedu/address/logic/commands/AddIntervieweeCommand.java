@@ -7,6 +7,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.hirelah.IntervieweeList;
 import seedu.address.model.hirelah.exceptions.IllegalActionException;
+import seedu.address.model.hirelah.storage.Storage;
 
 /**
  * AddIntervieweeCommand describes the behavior when the
@@ -42,7 +43,7 @@ public class AddIntervieweeCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) throws CommandException {
+    public CommandResult execute(Model model, Storage storage) throws CommandException {
         requireNonNull(model);
         IntervieweeList interviewees = model.getIntervieweeList();
 

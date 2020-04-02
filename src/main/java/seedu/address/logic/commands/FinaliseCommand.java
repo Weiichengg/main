@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import seedu.address.model.Model;
+import seedu.address.model.hirelah.storage.Storage;
 
 /**
  * FinaliseCommand finalises the properties of an interview session
@@ -21,7 +22,7 @@ public class FinaliseCommand extends Command {
 
 
     @Override
-    public CommandResult execute(Model model) {
+    public CommandResult execute(Model model, Storage storage) {
         requireNonNull(model);
         model.finaliseInterviewProperties();
         return new CommandResult(MESSAGE_SUCCESS);

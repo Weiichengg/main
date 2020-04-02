@@ -7,6 +7,7 @@ import seedu.address.model.Model;
 import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.IntervieweeList;
 import seedu.address.model.hirelah.exceptions.IllegalActionException;
+import seedu.address.model.hirelah.storage.Storage;
 
 /**
  * OpenReportCommand describes the behavior when the
@@ -14,12 +15,12 @@ import seedu.address.model.hirelah.exceptions.IllegalActionException;
  */
 public class OpenReportCommand extends Command {
     public static final String COMMAND_WORD = "open";
-    public static final String MESSAGE_SUCCESS = "Interview report opened: %1$s";
+    public static final String MESSAGE_NOT_INTERVIEWED = "%s has not completed their interview.";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Opens the interview report of an interviewee.\n"
             + "Parameters: IDENTIFIER\n"
             + "Example: " + COMMAND_WORD + " John Doe";
 
-    public static final String MESSAGE_OPEN_REPORT_INTERVIEWEE_SUCCESS = "Successfully opened Interviewee report: %1$s";
+    public static final String MESSAGE_SUCCESS = "Successfully opened Interviewee report: %s";
 
     private final String identifier;
 
@@ -32,20 +33,20 @@ public class OpenReportCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) throws CommandException {
+    public CommandResult execute(Model model, Storage storage) throws CommandException {
         requireNonNull(model);
         IntervieweeList interviewees = model.getIntervieweeList();
+        Interviewee interviewee;
         try {
-            Interviewee identifiedInterviewee = interviewees.getInterviewee(identifier);
-            identifiedInterviewee
-                    .getTranscript()
-                    .orElseThrow(() -> new CommandException(
-                            String.format("Interviewee %1$s has not been interviewed.", identifier)));
-            model.setCurrentInterviewee(identifiedInterviewee);
+            interviewee = interviewees.getInterviewee(identifier);
+            if (!interviewee.isInterviewed()) {
+                throw new CommandException(String.format(MESSAGE_NOT_INTERVIEWED, interviewee));
+            }
+            model.setCurrentInterviewee(interviewee);
         } catch (IllegalActionException e) {
             throw new CommandException(e.getMessage());
         }
-        return new ToggleCommandResult(String.format(MESSAGE_OPEN_REPORT_INTERVIEWEE_SUCCESS, identifier),
+        return new ToggleCommandResult(String.format(MESSAGE_SUCCESS, interviewee),
                 ToggleView.TRANSCRIPT);
     }
 

@@ -15,7 +15,6 @@ import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.IntervieweeList;
 import seedu.address.model.hirelah.MetricList;
 import seedu.address.model.hirelah.QuestionList;
-import seedu.address.model.hirelah.Transcript;
 import seedu.address.storage.UserPrefsStorage;
 
 /**
@@ -58,6 +57,7 @@ public class StorageManager implements Storage {
                                                      Boolean initialModel) throws DataConversionException {
         return readInterviewee(intervieweeStorage.getPath(), questionList, attributeList, initialModel);
     }
+
     /** Reads the Json file and converts them to Interviewee objects*/
     public Optional<IntervieweeList> readInterviewee(Path filepath, QuestionList questionList,
                                                      AttributeList attributeList,
@@ -81,6 +81,7 @@ public class StorageManager implements Storage {
     public Optional<AttributeList> readAttribute() throws DataConversionException {
         return readAttribute(attributeStorage.getPath());
     }
+
     /** Reads the Json file and converts them to Interviewee objects*/
     public Optional<AttributeList> readAttribute(Path filepath) throws DataConversionException {
         logger.fine("Attempting to read data from Attribute file: " + filepath);
@@ -139,11 +140,8 @@ public class StorageManager implements Storage {
         transcriptStorage.saveTranscript(source);
     }
 
-    /** Reads the Json file and converts them to Interviewee objects */
-    public Optional<Transcript> readTranscript(Path filepath, QuestionList questionList, AttributeList attributeList)
-            throws DataConversionException {
-        logger.fine("Attempting to read data from Transcript file: " + filepath);
-        return transcriptStorage.readTranscript(filepath, questionList, attributeList);
+    public Path getTranscriptDirectory() {
+        return transcriptStorage.getPath();
     }
 
     // ================ ModelStorage methods ================================
@@ -167,16 +165,11 @@ public class StorageManager implements Storage {
     }
 
     /**
-     *
+     * Reads the Model finalised state from memory.
      */
     public Optional<Boolean> readModel(Path filePath) throws DataConversionException {
         logger.fine("Attempting to read data from Model file: " + filePath);
         return modelStorage.readModel(filePath);
-    }
-
-
-    public Path getTranscriptDirectory() {
-        return transcriptStorage.getPath();
     }
 
     // ================ UserPrefsStorage methods ==============================

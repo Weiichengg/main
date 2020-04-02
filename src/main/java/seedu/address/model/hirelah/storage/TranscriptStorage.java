@@ -4,7 +4,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -40,14 +39,16 @@ public class TranscriptStorage {
      * @return OptionalTranscriptList
      * @throws DataConversionException error when reading the file
      */
-    public Optional<Transcript> readTranscript(Path filePath, QuestionList questionList, AttributeList attributeList)
+    public Optional<Transcript> readTranscript(int id, QuestionList questionList, AttributeList attributeList)
             throws DataConversionException {
-        requireNonNull(filePath);
+        Path filePath = directory.resolve(id + ".json");
+
         Optional<JsonSerializableTranscript> jsonTranscript = JsonUtil.readJsonFile(
                 filePath, JsonSerializableTranscript.class);
         if (jsonTranscript.isEmpty()) {
             return Optional.empty();
         }
+
         try {
             return Optional.of(jsonTranscript.get().toModelType(questionList, attributeList));
         } catch (IllegalValueException | IllegalActionException ive) {
@@ -63,9 +64,7 @@ public class TranscriptStorage {
     public void saveTranscript(Interviewee interviewee) throws IOException {
         requireNonNull(interviewee);
         requireNonNull(directory);
-        System.out.println("attempting to save");
-        String pathName = directory.toString() + interviewee.getId().toString() + ".json";
-        Path path = Paths.get(pathName);
+        Path path = directory.resolve(interviewee.getId() + ".json");
         FileUtil.createIfMissing(path);
         Transcript transcript = interviewee.getTranscript().get();
         JsonUtil.saveJsonFile(new JsonSerializableTranscript(transcript), path);

@@ -8,6 +8,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.exceptions.IllegalActionException;
+import seedu.address.model.hirelah.storage.Storage;
 
 /**
  * Opens the resume of the given interviewee, using the System default PDF viewer.
@@ -15,8 +16,9 @@ import seedu.address.model.hirelah.exceptions.IllegalActionException;
 public class OpenResumeCommand extends Command {
     public static final String COMMAND_WORD = "resume";
     public static final String MESSAGE_SUCCESS = "Opening resume..";
-    public static final String MESSAGE_NO_RESUME =
-            "Cannot find a resume! Please upload a resume via the upload command";
+    public static final String MESSAGE_NO_RESUME = "No resume uploaded!";
+    public static final String MESSAGE_RESUME_NOT_FOUND =
+            "Cannot find a resume at %s!\nPlease upload a resume via the upload command";
 
     private String identifier;
 
@@ -25,7 +27,7 @@ public class OpenResumeCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) throws CommandException {
+    public CommandResult execute(Model model, Storage storage) throws CommandException {
         Interviewee interviewee;
         try {
             interviewee = model.getIntervieweeList().getInterviewee(identifier);
@@ -35,7 +37,7 @@ public class OpenResumeCommand extends Command {
 
         File resume = interviewee.getResume().orElseThrow(() -> new CommandException(MESSAGE_NO_RESUME));
         if (!resume.exists()) {
-            throw new CommandException(MESSAGE_NO_RESUME);
+            throw new CommandException(String.format(MESSAGE_RESUME_NOT_FOUND, resume));
         }
         openFile(resume);
         return new CommandResult(MESSAGE_SUCCESS);

@@ -98,7 +98,7 @@ public class Transcript {
      * @return true if attribute has a score, false otherwise.
      */
     public boolean isAttributeScored(Attribute attribute) {
-        return this.attributeToScoreMap.containsKey(attribute);
+        return !this.attributeToScoreMap.get(attribute).isNaN();
     }
 
     /**

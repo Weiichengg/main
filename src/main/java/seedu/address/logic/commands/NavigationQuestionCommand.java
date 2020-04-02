@@ -6,6 +6,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.hirelah.exceptions.IllegalActionException;
+import seedu.address.model.hirelah.storage.Storage;
 
 /**
  * NavigationQuestionCommand describes the behavior when the
@@ -26,7 +27,7 @@ public class NavigationQuestionCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) throws CommandException {
+    public CommandResult execute(Model model, Storage storage) throws CommandException {
         requireNonNull(model);
         if (!model.hasCurrentInterviewee()) {
             throw new CommandException("You need to open a transcript of a particular interviewee "

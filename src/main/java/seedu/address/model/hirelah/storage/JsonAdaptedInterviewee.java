@@ -1,8 +1,6 @@
 package seedu.address.model.hirelah.storage;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -20,10 +18,10 @@ import seedu.address.model.hirelah.Transcript;
  */
 class JsonAdaptedInterviewee {
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
-    private String fullName;
+    private final String fullName;
     private final Integer id;
-    private String alias;
-    private String resume;
+    private final String alias;
+    private final String resume;
     private final boolean transcript;
 
 
@@ -59,18 +57,24 @@ class JsonAdaptedInterviewee {
                                    TranscriptStorage storage, Boolean finalised)
             throws IllegalValueException, DataConversionException {
         Interviewee interviewee = new Interviewee(fullName, id);
-        if (transcript) {
-            String location = storage.toString() + id.toString() + ".json";
-            Path path = Paths.get(location);
-            Optional<Transcript> transcript = storage.readTranscript(path, questionList, attributeList);
-            if (transcript.isEmpty() || finalised) {
-                throw new IllegalValueException("There is is an error in loading the transcript for " + fullName);
-            }
-            interviewee.setTranscript(transcript.get());
-        }
 
         if (alias != null) {
             interviewee.setAlias(alias);
+        }
+
+        if (resume != null) {
+            interviewee.setResume(new File(resume));
+        }
+
+        if (transcript) {
+            if (!finalised) {
+                throw new IllegalValueException("Model not finalised, illegal transcript detected");
+            }
+            Optional<Transcript> transcript = storage.readTranscript(id, questionList, attributeList);
+            if (transcript.isEmpty()) {
+                throw new IllegalValueException("There is is an error in loading the transcript for " + fullName);
+            }
+            interviewee.setTranscript(transcript.get());
         }
 
         return interviewee;

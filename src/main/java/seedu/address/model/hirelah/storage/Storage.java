@@ -1,7 +1,6 @@
 package seedu.address.model.hirelah.storage;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Optional;
 
 import seedu.address.commons.exceptions.DataConversionException;
@@ -11,7 +10,6 @@ import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.IntervieweeList;
 import seedu.address.model.hirelah.MetricList;
 import seedu.address.model.hirelah.QuestionList;
-import seedu.address.model.hirelah.Transcript;
 import seedu.address.storage.UserPrefsStorage;
 
 /**
@@ -37,10 +35,7 @@ public interface Storage extends UserPrefsStorage {
 
     Optional<MetricList> readMetric() throws DataConversionException;
 
-    void saveTranscript(Interviewee source) throws IOException, IllegalValueException;
-
-    Optional<Transcript> readTranscript(Path filepath, QuestionList questionList, AttributeList attributeList)
-            throws DataConversionException;
+    void saveTranscript(Interviewee source) throws IOException;
 
     void saveModel(Boolean model) throws IOException;
 

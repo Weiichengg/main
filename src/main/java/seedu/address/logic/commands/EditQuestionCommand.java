@@ -8,6 +8,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.hirelah.Question;
 import seedu.address.model.hirelah.QuestionList;
+import seedu.address.model.hirelah.storage.Storage;
 
 /**
  * EditQuestionCommand describes the behavior when the
@@ -33,7 +34,7 @@ public class EditQuestionCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) throws CommandException {
+    public CommandResult execute(Model model, Storage storage) throws CommandException {
         requireNonNull(model);
         validateFinalisation(model, DESIRED_MODEL_FINALIZED_STATE);
         QuestionList questions = model.getQuestionList();

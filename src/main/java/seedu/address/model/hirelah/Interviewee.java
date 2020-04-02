@@ -29,7 +29,7 @@ public class Interviewee {
     private final StringProperty alias = new SimpleStringProperty(null);
     private final ObjectProperty<File> resume = new SimpleObjectProperty<>(null);
     private final ObjectProperty<Transcript> transcript = new SimpleObjectProperty<>(null);
-    private boolean interview = false;
+
     /**
      * Creates a new Interviewee in the system which starts with no alias, no resume and
      * being not yet interviewed.
@@ -42,12 +42,8 @@ public class Interviewee {
         this.id = id;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
-    }
-
-    public boolean hasInterview() {
-        return interview;
     }
 
     public String getFullName() {
@@ -111,6 +107,15 @@ public class Interviewee {
 
     public ObjectProperty<Transcript> transcriptProperty() {
         return transcript;
+    }
+
+    /**
+     * Checks if an interviewee has completed their interview. {@code getScore} can be called if this is true.
+     *
+     * @return true if the interview has been completed, false otherwise.
+     */
+    public boolean isInterviewed() {
+        return getTranscript().map(Transcript::isCompleted).orElse(false);
     }
 
     /**

@@ -63,6 +63,7 @@ public class TranscriptStorage {
     public void saveTranscript(Interviewee interviewee) throws IOException {
         requireNonNull(interviewee);
         requireNonNull(directory);
+        System.out.println("attempting to save");
         String pathName = directory.toString() + interviewee.getId().toString() + ".json";
         Path path = Paths.get(pathName);
         FileUtil.createIfMissing(path);

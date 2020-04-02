@@ -15,6 +15,7 @@ import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.AttributeList;
 import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.IntervieweeList;
+import seedu.address.model.hirelah.IntervieweeToScore;
 import seedu.address.model.hirelah.Metric;
 import seedu.address.model.hirelah.MetricList;
 import seedu.address.model.hirelah.Question;
@@ -35,7 +36,7 @@ public class ModelManager implements Model {
     private final QuestionList questionList;
     private final MetricList metricList;
     private final UserPrefs userPrefs;
-    private ObservableList<Interviewee> bestNIntervieweeList;
+    private ObservableList<IntervieweeToScore> bestNIntervieweeList;
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
      */
@@ -222,7 +223,7 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public ObservableList<Interviewee> getBestNInterviewees() {
+    public ObservableList<IntervieweeToScore> getBestNInterviewees() {
         return bestNIntervieweeList;
     }
 

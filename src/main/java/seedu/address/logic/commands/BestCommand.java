@@ -14,6 +14,7 @@ import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.AttributeList;
 import seedu.address.model.hirelah.BestParameter;
 import seedu.address.model.hirelah.Interviewee;
+import seedu.address.model.hirelah.IntervieweeToScore;
 import seedu.address.model.hirelah.MetricList;
 import seedu.address.model.hirelah.storage.Storage;
 
@@ -72,35 +73,82 @@ public class BestCommand extends Command {
             default:
                 comparator = getOverallComparator(model.getAttributeList());
             }
+            getBestN(comparator, size, model);
         } catch (IllegalValueException e) {
             throw new CommandException(String.format(MESSAGE_PARAM_NOT_FOUND, paramPrefix));
         }
 
-        ObservableList<Interviewee> observableInterviewees = model.getFilteredIntervieweeListView();
-        ObservableList<Interviewee> bestNInterviewees = model.getBestNInterviewees();
-        getBestN(bestNInterviewees, observableInterviewees, comparator, size);
         return new ToggleCommandResult(
                 String.format(MESSAGE_SUCCESS, numberOfInterviewees), ToggleView.BEST_INTERVIEWEE);
     }
 
     /**
      * Fills the list of best interviewees with the top N interviewees using the given comparator.
+     * The interviewees shown could be more than N if ties.
      *
-     * @param bestNInterviewees the list to fil.
-     * @param observableInterviewees the list of interviewees to compare.
      * @param comparator the comparator to compare interviewees.
      * @param size the number of interviewees to fill into bestNInterviewees.
+     * @param model The model of the app.
      */
-    private void getBestN(ObservableList<Interviewee> bestNInterviewees,
-                          ObservableList<Interviewee> observableInterviewees,
-                          Comparator<Interviewee> comparator, int size) {
+    private void getBestN(Comparator<Interviewee> comparator, int size, Model model) throws IllegalValueException {
+        ObservableList<Interviewee> observableInterviewees = model.getFilteredIntervieweeListView();
+        ObservableList<IntervieweeToScore> bestNInterviewees = model.getBestNInterviewees();
         bestNInterviewees.clear();
         FilteredList<Interviewee> filtered = new FilteredList<>(observableInterviewees, Interviewee::isInterviewed);
         SortedList<Interviewee> sorted = new SortedList<>(filtered, comparator);
         int n = Math.min(size, sorted.size());
         for (int i = 0; i < n; i++) {
-            bestNInterviewees.add(sorted.get(i));
+            bestNInterviewees.add(new IntervieweeToScore(sorted.get(i), getScore(sorted.get(i), model)));
         }
+
+        Interviewee lastBest = bestNInterviewees.get(n - 1).getInterviewee();
+        while (bestNInterviewees.size() < sorted.size()
+                && comparator.compare(sorted.get(bestNInterviewees.size()), lastBest) == 0) {
+            lastBest = sorted.get(bestNInterviewees.size());
+            bestNInterviewees.add(new IntervieweeToScore(lastBest, getScore(lastBest, model)));
+        }
+    }
+
+    private double getScore(Interviewee interviewee, Model model) throws IllegalValueException {
+        switch (paramType) {
+        case METRIC:
+            return computeByMetric(interviewee, model.getMetricList(), paramPrefix);
+        case ATTRIBUTE:
+            return computeByAttribute(interviewee, model.getAttributeList(), paramPrefix);
+        default:
+            return getOverallScore(model.getAttributeList(), interviewee);
+        }
+    }
+
+    /**
+     * Computes the score of an interviewee based on the Metric provided.
+     *
+     * @param interviewee The interviewee that his score wants to be computed.
+     * @param metrics The metric list.
+     * @param paramPrefix The prefix of the metric name.
+     * @return The corresponding score
+     * @throws IllegalValueException If the prefix of the metric is not found or there are multiple metrics with the
+     * same prefix.
+     */
+    private double computeByMetric(Interviewee interviewee, MetricList metrics, String paramPrefix)
+            throws IllegalValueException {
+        return metrics.find(paramPrefix).computeScore(interviewee);
+    }
+
+    /**
+     * Computes the score of an interviewee based on the Metric provided.
+     *
+     * @param interviewee The interviewee that his score wants to be computed.
+     * @param attributes The attribute list.
+     * @param paramPrefix The prefix of the attribute name.
+     * @return The corresponding score.
+     * @throws IllegalValueException If the prefix of the attribute is not found or there are multiple attributes with
+     * the same prefix.
+     */
+    private double computeByAttribute(Interviewee interviewee,
+                                                       AttributeList attributes, String paramPrefix)
+            throws IllegalValueException {
+        return interviewee.getScore(attributes.find(paramPrefix));
     }
 
     /**

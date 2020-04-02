@@ -14,12 +14,12 @@ import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.hirelah.Interviewee;
+import seedu.address.model.hirelah.IntervieweeToScore;
 
 /**
  * Panel containing the list of interviewees.
  */
-public class IntervieweeListPanel extends UiPart<Region> {
+public class BestIntervieweeListPanel extends UiPart<Region> {
     private static final String FXML = "CardListView.fxml";
 
     @FXML
@@ -29,17 +29,18 @@ public class IntervieweeListPanel extends UiPart<Region> {
     private final CommandExecutor commandExecutor;
 
     @FXML
-    private ListView<Interviewee> cardListView;
+    private ListView<IntervieweeToScore> cardListView;
 
 
-    public IntervieweeListPanel(ObservableList<Interviewee> intervieweeList, CommandExecutor commandExecutor) {
+    public BestIntervieweeListPanel(ObservableList<IntervieweeToScore> intervieweeList,
+                                    CommandExecutor commandExecutor) {
         super(FXML);
         this.commandExecutor = commandExecutor;
-        title.setText("Interviewees");
+        title.setText("Best Interviewees");
         cardListView.setItems(intervieweeList);
-        cardListView.setCellFactory(listView -> new IntervieweeListViewCell());
+        cardListView.setCellFactory(listView -> new IntervieweeToScoreListViewCell());
         cardListView.getItems().addListener(
-                (ListChangeListener<Interviewee>) c -> cardListView.scrollTo(c.getList().size() - 1));
+                (ListChangeListener<IntervieweeToScore>) c -> cardListView.scrollTo(c.getList().size() - 1));
 
         //this.getRoot().setOnKeyPressed(key -> {
         //    KeyCode keyCode = key.getCode();
@@ -51,15 +52,16 @@ public class IntervieweeListPanel extends UiPart<Region> {
         //        }
         //    }
         //});
-        cardListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Interviewee>() {
+        cardListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<IntervieweeToScore>() {
             @Override
             public void changed(
-                    ObservableValue<? extends Interviewee> observable, Interviewee oldValue, Interviewee newValue) {
+                    ObservableValue<? extends IntervieweeToScore> observable,
+                    IntervieweeToScore oldValue, IntervieweeToScore newValue) {
                 try {
-                        commandExecutor.execute("open " + newValue.getFullName());
-                    } catch (CommandException | IllegalValueException e) {
-                        e.printStackTrace();
-                    }
+                    commandExecutor.execute("open " + newValue.getInterviewee().getFullName());
+                } catch (CommandException | IllegalValueException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -68,16 +70,16 @@ public class IntervieweeListPanel extends UiPart<Region> {
     /**
      * Custom {@code ListCell} that displays the graphics of a {@code Interviewee} using a {@code IntervieweeCard}.
      */
-    class IntervieweeListViewCell extends ListCell<Interviewee> {
+    class IntervieweeToScoreListViewCell extends ListCell<IntervieweeToScore> {
         @Override
-        protected void updateItem(Interviewee interviewee, boolean empty) {
-            super.updateItem(interviewee, empty);
+        protected void updateItem(IntervieweeToScore score, boolean empty) {
+            super.updateItem(score, empty);
 
-            if (empty || interviewee == null) {
+            if (empty || score == null) {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(new IntervieweeCard(interviewee, commandExecutor).getRoot());
+                setGraphic(new IntervieweeCard(score.getInterviewee(), commandExecutor, score.getScore()).getRoot());
             }
         }
     }

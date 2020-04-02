@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.AttributeList;
 import seedu.address.model.hirelah.Question;
 import seedu.address.model.hirelah.QuestionList;
@@ -57,6 +58,17 @@ public class JsonSerializableTranscript {
     public Transcript toModelType(QuestionList questions, AttributeList attributes)
             throws IllegalValueException, IllegalActionException {
         Transcript transcript = new Transcript(questions, attributes, startTime);
+        loadRemarks(transcript, questions);
+        loadScores(transcript, attributes);
+        if (completed) {
+            transcript.complete();
+        }
+        return transcript;
+    }
+
+    /** Loads saved remarks into the given Transcript. */
+    private void loadRemarks(Transcript transcript, QuestionList questions)
+            throws IllegalValueException, IllegalActionException {
         for (JsonAdaptedRemark remark : remarkList) {
             if (remark.getQuestionNumber() == null) {
                 transcript.addRemark(remark.getMessage(), remark.getTime());
@@ -69,6 +81,15 @@ public class JsonSerializableTranscript {
                 }
             }
         }
-        return transcript;
+    }
+
+    /** Loads saved scores into the given Transcript. */
+    private void loadScores(Transcript transcript, AttributeList attributes) throws IllegalValueException {
+        for (Attribute attribute : attributes) {
+            if (!attributeToScore.containsKey(attribute.toString())) {
+                throw new IllegalValueException("Missing attribute: " + attribute);
+            }
+            transcript.setAttributeScore(attribute, attributeToScore.get(attribute.toString()));
+        }
     }
 }

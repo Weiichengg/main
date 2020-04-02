@@ -18,6 +18,8 @@ import seedu.address.model.hirelah.exceptions.IllegalActionException;
 public class Transcript {
     private final RemarkList remarkList;
     private final ObservableMap<Attribute, Double> attributeToScoreMap;
+    private final ObservableList<Attribute> attributes;
+    private final ObservableList<Double> scores;
     private boolean completed;
 
     /**
@@ -37,6 +39,11 @@ public class Transcript {
         this.completed = false;
         for (Attribute attribute : attributes) {
             attributeToScoreMap.put(attribute, Double.NaN);
+        }
+        scores = FXCollections.observableArrayList();
+        this.attributes = attributes.getObservableList();
+        for (Attribute attribute : attributes) {
+            scores.add(Double.NaN);
         }
     }
 
@@ -71,6 +78,15 @@ public class Transcript {
         return FXCollections.unmodifiableObservableMap(attributeToScoreMap);
     }
 
+    public ObservableList<Attribute> getAttributesToBeScored() {
+        return FXCollections.unmodifiableObservableList(attributes);
+    }
+
+    public ObservableList<Double> getAttributeScores() {
+        return FXCollections.unmodifiableObservableList(scores);
+    }
+
+
     /**
      * Sets an {@code Attribute} of this {@code Interviewee} to have a certain score.
      *
@@ -79,6 +95,7 @@ public class Transcript {
      */
     public void setAttributeScore (Attribute attribute, Double score) {
         this.attributeToScoreMap.put(attribute, score);
+        this.scores.set(this.attributes.indexOf(attribute), score);
     }
 
     /**
@@ -88,7 +105,8 @@ public class Transcript {
      * @return The score of the given attribute as recorded in the interview.
      */
     public double getAttributeScore(Attribute attribute) {
-        return this.attributeToScoreMap.get(attribute);
+        // return this.attributeToScoreMap.get(attribute);
+        return scores.get(attributes.indexOf(attribute));
     }
 
     /**
@@ -98,6 +116,8 @@ public class Transcript {
      * @return true if attribute has a score, false otherwise.
      */
     public boolean isAttributeScored(Attribute attribute) {
+        //return this.attributeToScoreMap.containsKey(attribute);
+        //return !scores.get(attributes.indexOf(attribute)).isNaN();
         return !this.attributeToScoreMap.get(attribute).isNaN();
     }
 

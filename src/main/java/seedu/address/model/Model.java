@@ -9,6 +9,7 @@ import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.AttributeList;
 import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.IntervieweeList;
+import seedu.address.model.hirelah.IntervieweeToScore;
 import seedu.address.model.hirelah.Metric;
 import seedu.address.model.hirelah.MetricList;
 import seedu.address.model.hirelah.Question;
@@ -76,7 +77,7 @@ public interface Model {
     MetricList getMetricList();
 
     /** Returns the list of best N interviewees based on certain measures */
-    ObservableList<Interviewee> getBestNInterviewees();
+    ObservableList<IntervieweeToScore> getBestNInterviewees();
 
     /** Sets the current mode of the App */
     void setAppPhase(AppPhase phase);

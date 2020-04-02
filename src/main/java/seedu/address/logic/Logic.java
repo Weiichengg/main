@@ -9,6 +9,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.Interviewee;
+import seedu.address.model.hirelah.IntervieweeToScore;
 import seedu.address.model.hirelah.Metric;
 import seedu.address.model.hirelah.Question;
 
@@ -45,7 +46,7 @@ public interface Logic {
      */
     void setCurrentInterviewee(Interviewee interviewee);
 
-    ObservableList<Interviewee> getBestNIntervieweesView();
+    ObservableList<IntervieweeToScore> getBestNIntervieweesView();
 
     /**
      * Returns the user prefs' sessions directory.

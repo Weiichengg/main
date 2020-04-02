@@ -13,7 +13,7 @@ activate ui UI_COLOR
 ui -[UI_COLOR]> logic : execute("add attribute leadership")
 activate logic LOGIC_COLOR
 
-logic -[LOGIC_COLOR]> model : add(Leadership)
+logic -[LOGIC_COLOR]> model : add(leadership)
 activate model MODEL_COLOR
 
 model -[MODEL_COLOR]-> logic

@@ -1,8 +1,11 @@
 package seedu.address.ui;
 
 import java.awt.Desktop;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
@@ -39,7 +42,7 @@ public class MainWindow extends UiPart<Stage> {
 
     // Independent Ui parts residing in this Ui container
     private IntervieweeListPanel intervieweeListPanel;
-    private IntervieweeListPanel bestNIntervieweesPanel;
+    private BestIntervieweeListPanel bestNIntervieweesPanel;
     private RemarkListPanel remarkListPanel;
     private AttributeListPanel attributeListPanel;
     private MetricListPanel metricListPanel;
@@ -82,7 +85,7 @@ public class MainWindow extends UiPart<Stage> {
 
         attributeListPanel = new AttributeListPanel(logic.getAttributeListView());
         intervieweeListPanel = new IntervieweeListPanel(logic.getFilteredIntervieweeListView(), this::executeCommand);
-        bestNIntervieweesPanel = new IntervieweeListPanel(logic.getBestNIntervieweesView(), this::executeCommand);
+        bestNIntervieweesPanel = new BestIntervieweeListPanel(logic.getBestNIntervieweesView(), this::executeCommand);
         attributeListPanel = new AttributeListPanel(logic.getAttributeListView());
         metricListPanel = new MetricListPanel(logic.getMetricListView());
         questionListPanel = new QuestionListPanel(logic.getQuestionListView());
@@ -167,11 +170,10 @@ public class MainWindow extends UiPart<Stage> {
             return;
         }
         this.toggleView = toggleView;
-
+        secondWindow.hide();
         // Clear the current interviewee and close SecondWindow if not viewing a report
         if (this.toggleView != ToggleView.TRANSCRIPT) {
             logic.setCurrentInterviewee(null);
-            secondWindow.hide();
         }
 
         listPanelStackPane.getChildren().clear();
@@ -191,16 +193,21 @@ public class MainWindow extends UiPart<Stage> {
             break;
         case TRANSCRIPT: // transcript
             Interviewee currentInterviewee = logic.getCurrentInterviewee();
-            DetailedIntervieweeCard detailedIntervieweeCard = new DetailedIntervieweeCard(currentInterviewee);
+            DetailedIntervieweeCard detailedIntervieweeCard =
+                    new DetailedIntervieweeCard(currentInterviewee, this::executeCommand);
             remarkListPanel = new RemarkListPanel(currentInterviewee, logic.getQuestionListView());
             listPanelStackPane.getChildren().addAll(remarkListPanel.getRoot(), detailedIntervieweeCard.getRoot());
             StackPane.setAlignment(detailedIntervieweeCard.getRoot(), Pos.TOP_CENTER);
             StackPane.setAlignment(remarkListPanel.getRoot(), Pos.CENTER);
             // show second window
-            secondWindow.show(questionListPanel);
+            if (!currentInterviewee.getTranscript().get().isCompleted()) {
+                secondWindow.show(questionListPanel);
+            }
+
             break;
         case BEST_INTERVIEWEE:
-            bestNIntervieweesPanel = new IntervieweeListPanel(logic.getBestNIntervieweesView(), this::executeCommand);
+            bestNIntervieweesPanel = new BestIntervieweeListPanel(logic.getBestNIntervieweesView(),
+                    this::executeCommand);
             listPanelStackPane.getChildren().add(bestNIntervieweesPanel.getRoot());
             break;
         default:
@@ -209,17 +216,19 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Opens the user guide PDF on help command.
+     * Opens the user guide PDF on help command. Adapted from https://stackoverflow.com/questions/15654154.
      */
     public void handleHelp() {
-        if (Desktop.isDesktopSupported()) {
-            new Thread(() -> {
-                try {
-                    Desktop.getDesktop().open(new File("./src/main/resources/help/UserGuide.pdf"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }).start();
+        try {
+            String inputPdf = "/help/UserGuide.pdf";
+            Path tempOutput = Files.createTempFile("Temp", ".pdf");
+            tempOutput.toFile().deleteOnExit();
+            System.out.println("tempOutput: " + tempOutput);
+            InputStream is = getClass().getResourceAsStream(inputPdf);
+            Files.copy(is, tempOutput, StandardCopyOption.REPLACE_EXISTING);
+            Desktop.getDesktop().open(tempOutput.toFile());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -237,6 +246,7 @@ public class MainWindow extends UiPart<Stage> {
                 (int) primaryStage.getX(), (int) primaryStage.getY());
         logic.setGuiSettings(guiSettings);
         primaryStage.hide();
+        secondWindow.hide();
     }
 
     /**

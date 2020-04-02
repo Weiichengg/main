@@ -23,6 +23,7 @@
      <Label fx:id="name" styleClass="cell_big_label" text="\$first" />
       <Label fx:id="id" styleClass="cell_small_label" text="\$id" />
       <Label fx:id="alias" styleClass="cell_small_label" text="\$alias" />
+        <Label fx:id="score" styleClass="cell_small_label" text="\$score" />
     </VBox>
       <VBox alignment="CENTER_RIGHT" GridPane.columnIndex="1">
          <children>

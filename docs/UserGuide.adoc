@@ -398,7 +398,7 @@ Added the remark
 
 ....
 
-_Action:_ Marks the start of question 1 and 2, with the 2 remarks in the middle under question 1
+_Action:_ Marks the start of question 1, then adds some remarks related to question 1.
 
 image::Screenshots/StartQuestion.png[]
 
@@ -467,9 +467,9 @@ image::Screenshots/EndInterview.png[]
 ==== Add, Edit and Delete Metrics
 
 After the interview process, the interviewer may want to compare the interviewed interviewees by
-add, remove, and update Metrics to determine the relative importance of several attributes. Each metric
-assigns a numerical score to one or more Attributes, and interviewees can be ranked based on their overall score for
-this metric in the Decision Phase.
+creating a custom metric to determine the relative importance of several attributes. Each metric
+assigns a weight to one or more Attributes, and interviewees can be ranked based on their score calculated by
+this metric via the `best` command (see <<Find Best Candidates>>.
 
 [TIP]
 A metric's name can only contain alphabets and spaces, and it should not be blank!
@@ -479,7 +479,6 @@ A metric's name can only contain alphabets and spaces, and it should not be blan
 ....
 add metric <name> -a <attribute> -w <score> [-a <attribute> -w <score>]...
 edit metric <name> [-n <metric name>] [-a <attribute> -w <score>]...
-list metric
 delete metric <name>
 ....
 
@@ -488,14 +487,15 @@ delete metric <name>
 ....
 > add metric extremeLeader -a leadership -w 0.7 -a tenacity -w 0.6
 > edit metric extremeLeader -n extremeDictatorship -a leadership -w 3
-> list metric
 > delete metric extremeDictatorship
 > add metric extremeLeader -a leadership -w 0.7 -a tenacity -w 0.3
 ....
 
-_Action:_ Adds a metric named extremeLeader with the specified scoring scheme. Then, the extremeLeader metric
-name will be changed to extremeDictatorship with the newly specified scoring scheme. Then, the UI will
-display the list of metrics, before deleting the extremeDictatorship.
+_Action:_ Adds a metric named extremeLeader with the scoring scheme
+_Score = 0.7*leadership + 0.6*tenacity_. Then, the extremeLeader metric
+name will be changed to extremeDictatorship with the weightage of leadership increased to 3.
+Next it deletes extremeDictatorship, then adds the metric extremeLeader (again) with
+a different scoring scheme _Score = 0.7*leadership + 0.3*tenacity_.
 
 _Output:_
 
@@ -503,8 +503,6 @@ _Output:_
 New metric added: extremeLeader
 
 Edited metric: extremeLeader
-
-Here is the list of metrics:
 
 Deleted metric: extremeDictatorship
 
@@ -515,9 +513,9 @@ image::Screenshots/Metric.png[]
 
 ==== Viewing Interviewee Reports
 
-After interviewing a candidate, you can view the interview report any
-time by doing an open command, and we can close it after we finish
-examining the session.
+After interviewing a candidate, you can view the interview transcript any
+time by doing an open command. To close the report, simply just switch to another view
+via the list commands (see <<Switching views>>) or open another person's report.
 
 *Command*
 
@@ -551,9 +549,8 @@ interview time.
 
 ===== Navigating by Question Number
 
-Displays the first remark made while the current interviewee was
-answering the given question. The user can scroll up and down to see the
-rest of the remarks.
+Jumps to the point when the interviewee was
+answering the given question (marked by the `:start q<question number>` command.
 
 *Command*
 
@@ -602,9 +599,22 @@ image::Screenshots/NavigationTime.png[]
 
 ==== Find Best Candidates
 
-After interviewing all the candidates, you can find the top n candidates
-based on either a particular attribute, the average of all the
-attributes. You also can use a metric for scoring.
+After interviewing all the candidates, HireLah! can help you analyse the candidates and show
+you who scored the best in the attributes you set. By default, HireLah! allows you to compare by
+
+. The candidates' average scores across all attributes
+. A single attribute (eg. find who scored the highest in leadership)
+
+However you can also specify your own custom scoring metric (see <<Metrics>>).
+
+[TIP]
+Take note that HireLah! will only compare interviewees who have completed their interviews
+(Those who you have successfully performed an `:end` command after interviewing). This is
+to make sure all the compared candidates have been scored in all attributes.
+
+[TIP]
+In case there are ties in terms of the score, e.g. if we would like to retrieve the best 5 interviewees,
+but the score between the fifth and the sixth interviewees, both interviewees will be shown.
 
 *Command*
 
@@ -624,7 +634,7 @@ best 3 -a leadership
 
 _Action_: Firstly, HireLah! will show top 1 interviewees in overall score.
 Then, it will show the top 2 interviewees based on their leadership score. Finally, it will
-show the top 3 interviewes based on the extremeDictatorship metric.
+show the top 3 interviewees based on the extremeDictatorship metric.
 
 _Output_:
 
@@ -661,6 +671,10 @@ Then
 * "A" sufficiently identifies "Ambition"
 * "Team" **cannot** identify "Team player" as "Team motivator" shares this prefix
 * To minimally distinguish the 2, you must provide "Team p" or "Team m"
+
+HireLah! also provides this convenient function for other things that require
+typing names, such as the metric names. Questions are referenced by their question number
+and interviewees can use their interviewee ID, and a short alias can be given so the feature is not provided.
 
 === GUI Convenience Features
 

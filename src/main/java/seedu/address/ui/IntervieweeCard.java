@@ -1,7 +1,5 @@
 package seedu.address.ui;
 
-import java.io.File;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -19,8 +17,9 @@ import seedu.address.model.hirelah.Interviewee;
 public class IntervieweeCard extends UiPart<Region> {
 
     private static final String FXML = "IntervieweeListCard.fxml";
-    private static final File CHECKBOX_TICK = new File("./src/main/resources/images/checkbox_tick.png");
-    private static final File CHECKBOX_EMPTY = new File("./src/main/resources/images/checkbox_empty.png");
+    private static final String STATUS_DONE = "/images/done.png";
+    private static final String STATUS_PENDING = "/images/pending.png";
+    private static final String STATUS_EMPTY = "/images/empty.png";
 
 
     public final Interviewee interviewee;
@@ -36,6 +35,8 @@ public class IntervieweeCard extends UiPart<Region> {
     @FXML
     private Label alias;
     @FXML
+    private Label score;
+    @FXML
     private ImageView interviewStatus;
     @FXML
     private ImageView resumeStatus;
@@ -47,15 +48,20 @@ public class IntervieweeCard extends UiPart<Region> {
         name.setText(interviewee.getFullName());
         id.setText("ID:         " + interviewee.getId());
         alias.setText("Alias:     " + interviewee.getAlias().orElse("No alias has been set."));
-        if (interviewee.getTranscript().isPresent()) {
-            interviewStatus.setImage(new Image(CHECKBOX_TICK.toURI().toString()));
+        score.setVisible(false);
+
+        if (interviewee.getTranscript().isEmpty()) {
+            interviewStatus.setImage(new Image(getClass().getResourceAsStream(STATUS_EMPTY)));
+        } else if (interviewee.getTranscript().get().isCompleted()) {
+            interviewStatus.setImage(new Image(getClass().getResourceAsStream(STATUS_DONE)));
         } else {
-            interviewStatus.setImage(new Image(CHECKBOX_EMPTY.toURI().toString()));
+            interviewStatus.setImage(new Image(getClass().getResourceAsStream(STATUS_PENDING)));
         }
+
         if (interviewee.getResume().isPresent()) {
-            resumeStatus.setImage(new Image(CHECKBOX_TICK.toURI().toString()));
+            resumeStatus.setImage(new Image(getClass().getResourceAsStream(STATUS_DONE)));
         } else {
-            resumeStatus.setImage(new Image(CHECKBOX_EMPTY.toURI().toString()));
+            resumeStatus.setImage(new Image(getClass().getResourceAsStream(STATUS_EMPTY)));
         }
         this.getRoot().setOnKeyPressed(key -> {
             KeyCode keyCode = key.getCode();
@@ -67,6 +73,12 @@ public class IntervieweeCard extends UiPart<Region> {
                 }
             }
         });
+    }
+
+    public IntervieweeCard(Interviewee interviewee, CommandExecutor commandExecutor, double score) {
+        this(interviewee, commandExecutor);
+        this.score.setVisible(true);
+        this.score.setText("Score:     " + score);
     }
 
     private void handleOpen() {

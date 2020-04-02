@@ -132,7 +132,7 @@ public class Metric {
      * @param interviewee The interviewee to be computed.
      * @return The score of the interviewee based on the metric.
      */
-    private double computeScore(Interviewee interviewee) {
+    public double computeScore(Interviewee interviewee) {
         double totalScore = 0;
         for (Map.Entry<Attribute, Double> mapElement : attributeToWeight.entrySet()) {
             Attribute attribute = mapElement.getKey();

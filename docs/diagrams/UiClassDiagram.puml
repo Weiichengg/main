@@ -9,14 +9,19 @@ Interface Ui <<Interface>>
 Class "{abstract}\nUiPart" as UiPart
 Class UiManager
 Class MainWindow
-Class HelpWindow
 Class ResultDisplay
-Class InteractiveViewPanel
-Class IntervieweeCard
-Class TranscriptCard
-Class TextList
 Class StatusBarFooter
 Class CommandBox
+Class AttributeListPanel
+Class IntervieweeListPanel
+Class IntervieweeCard
+Class MetricListPanel
+class MetricCard
+Class QuestionListPanel
+Class QuestionRemarkCard
+Class RemarkCard
+Class RemarkListPanel
+Class SecondWindow
 }
 
 package Model <<Rectangle>> {
@@ -32,36 +37,60 @@ HiddenOutside ..> Ui
 
 UiManager .left.|> Ui
 UiManager -down-> MainWindow
-MainWindow --> HelpWindow
+MainWindow --> SecondWindow
 MainWindow *-down-> CommandBox
 MainWindow *-down-> ResultDisplay
-MainWindow *-down-> InteractiveViewPanel
 MainWindow *-down-> StatusBarFooter
 
-InteractiveViewPanel -down-> IntervieweeCard
-InteractiveViewPanel -down-> TranscriptCard
-InteractiveViewPanel -down-> TextList
+SecondWindow *-down-> QuestionListPanel
+
+
+MainWindow *-down-> AttributeListPanel
+
+MainWindow *-down-> IntervieweeListPanel
+IntervieweeListPanel *-down-> IntervieweeCard
+
+MainWindow *-down-> MetricListPanel
+MetricListPanel *-down-> MetricCard
+
+MainWindow *-down-> QuestionListPanel
+
+MainWindow *-down-> RemarkListPanel
+RemarkListPanel *-down-> RemarkCard
+RemarkListPanel *-down-> QuestionRemarkCard
+
 
 
 MainWindow -down-|> UiPart
 
 ResultDisplay --|> UiPart
 CommandBox --|> UiPart
-InteractiveViewPanel -up-|> UiPart
-IntervieweeCard -up-|> UiPart
-TranscriptCard -up-|> UiPart
-TextList --|> UiPart
 StatusBarFooter --|> UiPart
-HelpWindow -down-|> UiPart
+
+AttributeListPanel -up-|> UiPart
+IntervieweeListPanel --|> UiPart
+IntervieweeCard -up-|> UiPart
+MetricListPanel --|> UiPart
+MetricCard -up-|> UiPart
+QuestionListPanel -up-|> UiPart
+QuestionRemarkCard -up-|> UiPart
+RemarkCard -up-|> UiPart
+RemarkListPanel --|> UiPart
+SecondWindow --|> UiPart
+
+
 
 IntervieweeCard .down.> Model
-TranscriptCard .down.> Model
-TextList .down.> Model
+RemarkCard .down.> Model
+QuestionRemarkCard .down.> Model
+AttributeListPanel .down.> Model
+QuestionListPanel .down.> Model
+MetricCard .down.> Model
+
 UiManager -right-> Logic
 MainWindow -left-> Logic
 
-InteractiveViewPanel -[hidden]left- HelpWindow
-HelpWindow -[hidden]left- CommandBox
+
 CommandBox -[hidden]left- ResultDisplay
 ResultDisplay -[hidden]left- StatusBarFooter
 

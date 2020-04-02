@@ -78,10 +78,6 @@ Interviewee *-up-> "*" Transcript
 Transcript *--> RemarkList
 Transcript *--> AttributeToScoreMap
 
-Package Storage {
-Class HiddenStorage #FFFFFF
-}
-
 Class HiddenOutside #FFFFFF
 HiddenOutside ..> Model
 

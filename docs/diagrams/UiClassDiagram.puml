@@ -45,7 +45,7 @@ MainWindow *-down-> StatusBarFooter
 SecondWindow *-down-> QuestionListPanel
 
 
-MainWindow *-down-> AttributeListPanel
+MainWindow *-left-> AttributeListPanel
 
 MainWindow *-down-> IntervieweeListPanel
 IntervieweeListPanel *-down-> IntervieweeCard

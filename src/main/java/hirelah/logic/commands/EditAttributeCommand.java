@@ -3,7 +3,6 @@ package hirelah.logic.commands;
 import static hirelah.logic.util.CommandUtil.saveMetrics;
 import static java.util.Objects.requireNonNull;
 
-
 import hirelah.commons.exceptions.IllegalValueException;
 import hirelah.commons.util.ModelUtil;
 import hirelah.logic.commands.exceptions.CommandException;

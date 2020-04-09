@@ -44,7 +44,7 @@ public class AddQuestionCommand extends Command {
         } catch (IllegalValueException e) {
             throw new CommandException(e.getMessage());
         }
-        saveQuestions(model,storage);
+        saveQuestions(model, storage);
         return new ToggleCommandResult(String.format(MESSAGE_SUCCESS, toAdd), ToggleView.QUESTION);
     }
 

@@ -41,7 +41,7 @@ public class DeleteMetricCommand extends Command {
         MetricList metrics = model.getMetricList();
         try {
             Metric metric = metrics.delete(metricPrefix);
-            saveMetrics(model,storage);
+            saveMetrics(model, storage);
             return new ToggleCommandResult(String.format(MESSAGE_DELETE_METRIC_SUCCESS,
                     metric), ToggleView.METRIC);
         } catch (IllegalValueException e) {

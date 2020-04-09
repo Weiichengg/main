@@ -4,7 +4,6 @@ import static hirelah.commons.util.ModelUtil.validateFinalisation;
 import static hirelah.logic.util.CommandUtil.saveMetrics;
 import static java.util.Objects.requireNonNull;
 
-
 import java.util.List;
 
 import hirelah.commons.exceptions.IllegalValueException;

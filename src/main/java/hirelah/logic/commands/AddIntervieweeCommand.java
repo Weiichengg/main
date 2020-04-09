@@ -58,7 +58,7 @@ public class AddIntervieweeCommand extends Command {
         } catch (IllegalActionException | IllegalValueException e) {
             throw new CommandException(e.getMessage());
         }
-        saveInterviewees(model,storage);
+        saveInterviewees(model, storage);
         return new ToggleCommandResult(String.format(MESSAGE_SUCCESS, fullName), ToggleView.INTERVIEWEE);
     }
 

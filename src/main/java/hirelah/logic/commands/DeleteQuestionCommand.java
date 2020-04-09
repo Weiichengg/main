@@ -41,7 +41,7 @@ public class DeleteQuestionCommand extends Command {
         QuestionList questions = model.getQuestionList();
         try {
             Question deletedQn = questions.delete(questionIndex);
-            saveQuestions(model,storage);
+            saveQuestions(model, storage);
             return new ToggleCommandResult(String.format(MESSAGE_DELETE_QUESTION_SUCCESS,
                     deletedQn),
                     ToggleView.QUESTION);

@@ -1,11 +1,10 @@
 package hirelah.logic.util;
 
+import java.io.IOException;
+
 import hirelah.logic.commands.exceptions.CommandException;
 import hirelah.model.Model;
 import hirelah.storage.Storage;
-
-import java.io.IOException;
-
 /**
  * Help to save the state of the system upon executing a particular command.
  */

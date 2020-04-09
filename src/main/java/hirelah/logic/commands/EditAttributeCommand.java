@@ -1,6 +1,8 @@
 package hirelah.logic.commands;
 
+import static hirelah.logic.util.CommandUtil.saveMetrics;
 import static java.util.Objects.requireNonNull;
+
 
 import hirelah.commons.exceptions.IllegalValueException;
 import hirelah.commons.util.ModelUtil;
@@ -41,6 +43,7 @@ public class EditAttributeCommand extends Command {
         AttributeList attributes = model.getAttributeList();
         try {
             Attribute attribute = attributes.edit(attributePrefix, updatedAttribute);
+            saveMetrics(model, storage);
             return new ToggleCommandResult(String.format(MESSAGE_EDIT_ATTRIBUTE_SUCCESS, attribute, updatedAttribute),
                     ToggleView.ATTRIBUTE);
         } catch (IllegalValueException e) {

@@ -1,5 +1,6 @@
 package hirelah.logic.commands;
 
+import static hirelah.logic.util.CommandUtil.saveAttributes;
 import static java.util.Objects.requireNonNull;
 
 import hirelah.commons.exceptions.IllegalValueException;
@@ -38,13 +39,13 @@ public class DeleteAttributeCommand extends Command {
         AttributeList attributes = model.getAttributeList();
         try {
             Attribute attribute = attributes.delete(attributePrefix);
+            saveAttributes(model, storage);
             return new ToggleCommandResult(String.format(MESSAGE_DELETE_ATTRIBUTE_SUCCESS, attribute),
                     ToggleView.ATTRIBUTE);
         } catch (IllegalValueException e) {
             throw new CommandException(e.getMessage());
         }
     }
-
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object

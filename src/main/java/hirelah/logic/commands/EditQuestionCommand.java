@@ -1,5 +1,6 @@
 package hirelah.logic.commands;
 
+import static hirelah.logic.util.CommandUtil.saveQuestions;
 import static java.util.Objects.requireNonNull;
 
 import hirelah.commons.exceptions.IllegalValueException;
@@ -42,6 +43,7 @@ public class EditQuestionCommand extends Command {
 
         try {
             Question question = questions.edit(questionIndex, updatedDescription);
+            saveQuestions(model,storage);
             return new ToggleCommandResult(String.format(MESSAGE_EDIT_QUESTION_SUCCESS, questionIndex,
                     updatedDescription), ToggleView.QUESTION);
         } catch (IllegalValueException e) {

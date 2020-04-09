@@ -1,5 +1,6 @@
 package hirelah.logic.commands;
 
+import static hirelah.logic.util.CommandUtil.saveInterviewees;
 import static java.util.Objects.requireNonNull;
 
 import hirelah.commons.exceptions.IllegalValueException;
@@ -8,6 +9,8 @@ import hirelah.model.Model;
 import hirelah.model.hirelah.IntervieweeList;
 import hirelah.model.hirelah.exceptions.IllegalActionException;
 import hirelah.storage.Storage;
+
+import java.io.IOException;
 
 /**
  * EditIntervieweeCommand describes the behavior when the
@@ -51,6 +54,7 @@ public class EditIntervieweeCommand extends Command {
         } catch (IllegalActionException | IllegalValueException e) {
             throw new CommandException(e.getMessage());
         }
+        saveInterviewees(model,storage);
         return new ToggleCommandResult(String.format(MESSAGE_EDIT_INTERVIEWEE_SUCCESS, identifier),
                 ToggleView.INTERVIEWEE);
     }
@@ -63,5 +67,4 @@ public class EditIntervieweeCommand extends Command {
                 && updatedName.equals(((EditIntervieweeCommand) other).updatedName)
                 && updatedAlias.equals(((EditIntervieweeCommand) other).updatedAlias)); // state check
     }
-
 }

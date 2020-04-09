@@ -1,6 +1,7 @@
 package hirelah.logic.commands;
 
 import static hirelah.logic.parser.CliSyntax.PREFIX_ALIAS;
+import static hirelah.logic.util.CommandUtil.saveInterviewees;
 import static java.util.Objects.requireNonNull;
 
 import hirelah.commons.exceptions.IllegalValueException;
@@ -57,7 +58,7 @@ public class AddIntervieweeCommand extends Command {
         } catch (IllegalActionException | IllegalValueException e) {
             throw new CommandException(e.getMessage());
         }
-
+        saveInterviewees(model,storage);
         return new ToggleCommandResult(String.format(MESSAGE_SUCCESS, fullName), ToggleView.INTERVIEWEE);
     }
 

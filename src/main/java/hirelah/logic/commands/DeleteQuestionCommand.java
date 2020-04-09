@@ -1,11 +1,13 @@
 package hirelah.logic.commands;
 
+import static hirelah.logic.util.CommandUtil.saveQuestions;
 import static java.util.Objects.requireNonNull;
 
 import hirelah.commons.exceptions.IllegalValueException;
 import hirelah.commons.util.ModelUtil;
 import hirelah.logic.commands.exceptions.CommandException;
 import hirelah.model.Model;
+import hirelah.model.hirelah.Question;
 import hirelah.model.hirelah.QuestionList;
 import hirelah.storage.Storage;
 
@@ -38,8 +40,10 @@ public class DeleteQuestionCommand extends Command {
         ModelUtil.validateFinalisation(model, DESIRED_MODEL_FINALIZED_STATE);
         QuestionList questions = model.getQuestionList();
         try {
+            Question deletedQn = questions.delete(questionIndex);
+            saveQuestions(model,storage);
             return new ToggleCommandResult(String.format(MESSAGE_DELETE_QUESTION_SUCCESS,
-                    questions.delete(questionIndex)),
+                    deletedQn),
                     ToggleView.QUESTION);
         } catch (IllegalValueException e) {
             throw new CommandException(e.getMessage());

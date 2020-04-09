@@ -1,6 +1,7 @@
 package hirelah.logic.commands;
 
 import static hirelah.commons.util.ModelUtil.validateFinalisation;
+import static hirelah.logic.util.CommandUtil.saveMetrics;
 import static java.util.Objects.requireNonNull;
 
 import hirelah.commons.exceptions.IllegalValueException;
@@ -40,6 +41,7 @@ public class DeleteMetricCommand extends Command {
         MetricList metrics = model.getMetricList();
         try {
             Metric metric = metrics.delete(metricPrefix);
+            saveMetrics(model,storage);
             return new ToggleCommandResult(String.format(MESSAGE_DELETE_METRIC_SUCCESS,
                     metric), ToggleView.METRIC);
         } catch (IllegalValueException e) {

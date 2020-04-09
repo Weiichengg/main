@@ -64,17 +64,6 @@ public class LogicManager implements Logic {
             throw new IllegalArgumentException("Impossible enum case");
         }
         commandResult = command.execute(model, storage);
-
-        try {
-            storage.saveInterviewee(model.getIntervieweeList());
-            storage.saveAttribute(model.getAttributeList());
-            storage.saveQuestion(model.getQuestionList());
-            storage.saveMetric(model.getMetricList());
-            storage.saveModel(model.isFinalisedInterviewProperties());
-        } catch (IOException ioe) {
-            throw new CommandException(FILE_OPS_ERROR_MESSAGE + ioe, ioe);
-        }
-
         return commandResult;
     }
 

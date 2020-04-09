@@ -1,5 +1,6 @@
 package hirelah.logic.commands;
 
+import static hirelah.logic.util.CommandUtil.saveInterviewees;
 import static java.util.Objects.requireNonNull;
 
 import hirelah.logic.commands.exceptions.CommandException;
@@ -41,7 +42,7 @@ public class DeleteIntervieweeCommand extends Command {
         } catch (IllegalActionException e) {
             throw new CommandException(e.getMessage());
         }
-
+        saveInterviewees(model, storage);
         return new ToggleCommandResult(String.format(MESSAGE_SUCCESS, identifier), ToggleView.INTERVIEWEE);
     }
 

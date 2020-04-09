@@ -1,5 +1,6 @@
 package hirelah.logic.commands;
 
+import static hirelah.logic.util.CommandUtil.saveAttributes;
 import static java.util.Objects.requireNonNull;
 
 import hirelah.commons.exceptions.IllegalValueException;
@@ -9,10 +10,12 @@ import hirelah.model.Model;
 import hirelah.model.hirelah.AttributeList;
 import hirelah.storage.Storage;
 
+
 /**
  * AddAttributeCommand describes the behavior when the
  * client wants to add an attribute to the list.
  */
+
 public class AddAttributeCommand extends Command {
     public static final String COMMAND_WORD = "attribute";
     public static final boolean DESIRED_MODEL_FINALIZED_STATE = false;
@@ -27,6 +30,7 @@ public class AddAttributeCommand extends Command {
 
     /**
      * Creates an AddAttributeCommand to add the specified {@code Attribute}
+     * Subsequently, save the corresponding attributeList to the storage.
      */
     public AddAttributeCommand(String attribute) {
         toAdd = attribute;
@@ -43,9 +47,10 @@ public class AddAttributeCommand extends Command {
         } catch (IllegalValueException e) {
             throw new CommandException(e.getMessage());
         }
-
+        saveAttributes(model, storage);
         return new ToggleCommandResult(String.format(MESSAGE_SUCCESS, toAdd), ToggleView.ATTRIBUTE);
     }
+
 
     @Override
     public boolean equals(Object other) {

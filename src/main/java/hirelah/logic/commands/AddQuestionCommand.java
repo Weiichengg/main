@@ -1,5 +1,6 @@
 package hirelah.logic.commands;
 
+import static hirelah.logic.util.CommandUtil.saveQuestions;
 import static java.util.Objects.requireNonNull;
 
 import hirelah.commons.exceptions.IllegalValueException;
@@ -24,7 +25,6 @@ public class AddQuestionCommand extends Command {
             + MESSAGE_FUNCTION
             + "Example: add " + COMMAND_WORD + " what is this question?";
 
-
     private final String toAdd;
 
     /**
@@ -44,7 +44,7 @@ public class AddQuestionCommand extends Command {
         } catch (IllegalValueException e) {
             throw new CommandException(e.getMessage());
         }
-
+        saveQuestions(model,storage);
         return new ToggleCommandResult(String.format(MESSAGE_SUCCESS, toAdd), ToggleView.QUESTION);
     }
 

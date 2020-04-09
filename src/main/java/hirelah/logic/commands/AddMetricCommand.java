@@ -1,6 +1,7 @@
 package hirelah.logic.commands;
 
 import static hirelah.commons.util.ModelUtil.validateFinalisation;
+import static hirelah.logic.util.CommandUtil.saveMetrics;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
@@ -51,9 +52,10 @@ public class AddMetricCommand extends Command {
 
         try {
             metrics.add(toAdd, attributes, attributePrefixes, addedWeights);
-            return new ToggleCommandResult(String.format(MESSAGE_SUCCESS, toAdd), ToggleView.METRIC);
         } catch (IllegalValueException e) {
             throw new CommandException(e.getMessage());
         }
+        saveMetrics(model, storage);
+        return new ToggleCommandResult(String.format(MESSAGE_SUCCESS, toAdd), ToggleView.METRIC);
     }
 }

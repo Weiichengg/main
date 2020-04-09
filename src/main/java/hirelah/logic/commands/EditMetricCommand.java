@@ -1,7 +1,9 @@
 package hirelah.logic.commands;
 
 import static hirelah.commons.util.ModelUtil.validateFinalisation;
+import static hirelah.logic.util.CommandUtil.saveMetrics;
 import static java.util.Objects.requireNonNull;
+
 
 import java.util.List;
 
@@ -50,6 +52,7 @@ public class EditMetricCommand extends Command {
 
         try {
             String name = metrics.edit(toEdit, updatedName, attributes, attributePrefixes, weightages);
+            saveMetrics(model, storage);
             return new ToggleCommandResult(
                     String.format(MESSAGE_EDIT_METRIC_SUCCESS, name), ToggleView.METRIC);
         } catch (IllegalValueException e) {

@@ -21,7 +21,7 @@ Responsibilities:
 '''
 
 === Chin Synn Khee, Joash
-image::CornCobs.png[width="200", align="left"]
+image::corncobs.png[width="200", align="left"]
 {empty}[http://github.com/CornCobs[github]] [<<CornCobs#, portfolio>>]
 
 Role: Developer +

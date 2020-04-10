@@ -29,7 +29,7 @@ public class FinaliseCommand extends Command {
         requireNonNull(model);
         model.finaliseInterviewProperties();
         saveModel(model, storage);
-        return new CommandResult(MESSAGE_SUCCESS);
+        return new ToggleCommandResult(MESSAGE_SUCCESS, ToggleView.INTERVIEWEE);
     }
 
     @Override

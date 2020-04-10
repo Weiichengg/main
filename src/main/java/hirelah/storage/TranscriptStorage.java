@@ -42,7 +42,6 @@ public class TranscriptStorage {
     public Optional<Transcript> readTranscript(int id, QuestionList questionList, AttributeList attributeList)
             throws DataConversionException {
         Path filePath = directory.resolve(id + ".json");
-
         Optional<JsonSerializableTranscript> jsonTranscript = JsonUtil.readJsonFile(
                 filePath, JsonSerializableTranscript.class);
         if (jsonTranscript.isEmpty()) {

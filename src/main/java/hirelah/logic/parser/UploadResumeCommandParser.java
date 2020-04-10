@@ -14,6 +14,7 @@ public class UploadResumeCommandParser implements Parser<UploadResumeCommand> {
     public UploadResumeCommand parse(String userInput) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(userInput, PREFIX_PATH);
         String path = argMultimap.getValue(PREFIX_PATH).orElse(null);
+        ParserUtil.checkEmptyArgument(argMultimap.getPreamble(), UploadResumeCommand.MESSAGE_USAGE);
         return new UploadResumeCommand(argMultimap.getPreamble(), path);
     }
 }

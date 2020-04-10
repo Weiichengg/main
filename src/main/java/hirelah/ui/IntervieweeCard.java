@@ -1,15 +1,17 @@
 package hirelah.ui;
 
-import hirelah.commons.exceptions.IllegalValueException;
-import hirelah.logic.commands.exceptions.CommandException;
+import java.util.logging.Logger;
+
+import hirelah.commons.core.LogsCenter;
 import hirelah.model.hirelah.Interviewee;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+
 
 /**
  * An UI component that displays information of a {@code Interviewee}.
@@ -24,6 +26,7 @@ public class IntervieweeCard extends UiPart<Region> {
 
     public final Interviewee interviewee;
 
+    private final Logger logger = LogsCenter.getLogger(IntervieweeCard.class);
     private CommandExecutor commandExecutor;
 
     @FXML
@@ -47,7 +50,7 @@ public class IntervieweeCard extends UiPart<Region> {
         this.commandExecutor = commandExecutor;
         name.setText(interviewee.getFullName());
         id.setText("ID:         " + interviewee.getId());
-        alias.setText("Alias:     " + interviewee.getAlias().orElse("No alias has been set."));
+        alias.setText("Alias:     " + interviewee.getAlias().orElse("No alias."));
         score.setVisible(false);
 
         if (interviewee.getTranscript().isEmpty()) {
@@ -63,23 +66,6 @@ public class IntervieweeCard extends UiPart<Region> {
         } else {
             resumeStatus.setImage(new Image(getClass().getResourceAsStream(STATUS_EMPTY)));
         }
-        this.getRoot().setOnKeyPressed(key -> {
-            KeyCode keyCode = key.getCode();
-            if (keyCode == KeyCode.ENTER) {
-                try {
-                    commandExecutor.execute("open " + this.interviewee.getFullName());
-                } catch (CommandException | IllegalValueException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        this.getRoot().setOnMouseClicked(event -> {
-            try {
-                commandExecutor.execute("open " + this.interviewee);
-            } catch (CommandException | IllegalValueException e) {
-                e.printStackTrace();
-            }
-        });
     }
 
     public IntervieweeCard(Interviewee interviewee, CommandExecutor commandExecutor, double score) {

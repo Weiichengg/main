@@ -31,4 +31,10 @@ public class ListMetricCommand extends Command {
         requireNonNull(model);
         return new ToggleCommandResult(MESSAGE_SUCCESS, ToggleView.METRIC);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof ListMetricCommand);
+    }
 }

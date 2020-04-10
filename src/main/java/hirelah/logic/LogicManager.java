@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import hirelah.commons.core.GuiSettings;
@@ -113,6 +114,16 @@ public class LogicManager implements Logic {
     @Override
     public List<File> getAvailableSessions() throws IOException {
         return storage.readSessions(model.getUserPrefs());
+    }
+
+    @Override
+    public Optional<Path> getCurrentSession() {
+        return model.getCurrentSession();
+    }
+
+    @Override
+    public boolean isFinalisedInterviewProperties() {
+        return model.isFinalisedInterviewProperties();
     }
 
     @Override

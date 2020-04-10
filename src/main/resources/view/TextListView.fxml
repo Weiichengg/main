@@ -1,24 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <!--For ListViews that displays list of text based information-->
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <BorderPane VBox.vgrow="ALWAYS">
-      <center>
-         <ListView fx:id="textListView" prefHeight="0" />
-      </center>
-      <top>
-         <HBox prefHeight="25.0" prefWidth="200" >
-            <children>
-               <Label fx:id="title" text="\$title" />
-            </children>
-         </HBox>
-      </top>
-   </BorderPane>
+<VBox xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
+   <ListView fx:id="textListView" prefHeight="500"/>
 </VBox>

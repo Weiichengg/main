@@ -5,6 +5,7 @@ package hirelah.logic.commands;
  */
 public enum ToggleView {
     SESSION,
+    INTERVIEW,
     ATTRIBUTE,
     INTERVIEWEE,
     METRIC,

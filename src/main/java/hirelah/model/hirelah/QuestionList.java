@@ -125,7 +125,7 @@ public class QuestionList {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof Question // instanceof handles nulls
+                || (other instanceof QuestionList // instanceof handles nulls
                 && questions.equals(((QuestionList) other).questions)); // state check
     }
 }

@@ -13,19 +13,19 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 
 /**
- * Panel containing the list of interviewees.
+ * Panel containing the list of best n interviewees ranked by a user-defined metric.
  */
 public class BestIntervieweeListPanel extends UiPart<Region> {
-    private static final String FXML = "CardListView.fxml";
+    private static final String FXML = "IntervieweeListPanel.fxml";
 
     @FXML
     protected Label title;
 
-    private final Logger logger = LogsCenter.getLogger(IntervieweeListPanel.class);
+    private final Logger logger = LogsCenter.getLogger(BestIntervieweeListPanel.class);
     private final CommandExecutor commandExecutor;
 
     @FXML
-    private ListView<IntervieweeToScore> cardListView;
+    private ListView<IntervieweeToScore> intervieweeListView;
 
 
     public BestIntervieweeListPanel(ObservableList<IntervieweeToScore> intervieweeList,
@@ -33,10 +33,10 @@ public class BestIntervieweeListPanel extends UiPart<Region> {
         super(FXML);
         this.commandExecutor = commandExecutor;
         title.setText("Best Interviewees");
-        cardListView.setItems(intervieweeList);
-        cardListView.setCellFactory(listView -> new IntervieweeToScoreListViewCell());
-        cardListView.getItems().addListener(
-                (ListChangeListener<IntervieweeToScore>) c -> cardListView.scrollTo(c.getList().size() - 1));
+        intervieweeListView.setItems(intervieweeList);
+        intervieweeListView.setCellFactory(listView -> new IntervieweeToScoreListViewCell());
+        intervieweeListView.getItems().addListener(
+                (ListChangeListener<IntervieweeToScore>) c -> intervieweeListView.scrollTo(c.getList().size() - 1));
 
         //this.getRoot().setOnKeyPressed(key -> {
         //    KeyCode keyCode = key.getCode();

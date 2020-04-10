@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 import hirelah.commons.core.GuiSettings;
 import hirelah.logic.commands.CommandResult;
@@ -55,6 +56,16 @@ public interface Logic {
      * Returns the user prefs' sessions directory.
      */
     Path getSessionsDirectory();
+
+    /** Returns the Path where the current Interview session is stored, if it exists. */
+    Optional<Path> getCurrentSession();
+
+    /**
+     * Returns if the interview session has been finalised.
+     *
+     * @see hirelah.logic.commands.FinaliseCommand
+     */
+    boolean isFinalisedInterviewProperties();
 
     /**
      * Returns the user prefs' GUI settings.

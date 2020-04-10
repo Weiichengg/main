@@ -112,6 +112,9 @@ public class ModelManager implements Model {
         userPrefs.setSessionsDirectory(addressBookFilePath);
     }
 
+
+    //=========== App state setters/getters ======================================================
+
     @Override
     public Optional<Path> getCurrentSession() {
         return Optional.ofNullable(session);
@@ -122,7 +125,14 @@ public class ModelManager implements Model {
         this.session = session;
     }
 
-    //=========== App state setters/getters ======================================================
+    @Override
+    public Path closeSession() {
+        Path closedSession = this.session;
+        setCurrentSession(null);
+        setAppPhase(AppPhase.PRE_SESSION);
+        finalisedInterviewProperties = false;
+        return closedSession;
+    }
 
     @Override
     public void setAppPhase(AppPhase phase) {

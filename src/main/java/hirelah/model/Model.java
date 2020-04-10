@@ -63,6 +63,12 @@ public interface Model {
      */
     void setCurrentSession(Path session);
 
+    /**
+     * Closes the current session, resetting Model state to {@code PRE_SESSION}, with no current session directory
+     * and the model not finalized yet.
+     */
+    Path closeSession();
+
     /** Returns an unmodifiable view of the attribute list */
     ObservableList<Attribute> getAttributeListView();
 

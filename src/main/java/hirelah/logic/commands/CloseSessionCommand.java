@@ -4,7 +4,6 @@ import java.nio.file.Path;
 
 import hirelah.logic.commands.exceptions.CommandException;
 import hirelah.model.Model;
-import hirelah.model.hirelah.AppPhase;
 import hirelah.storage.Storage;
 
 /**
@@ -16,9 +15,7 @@ public class CloseSessionCommand extends Command {
 
     @Override
     public CommandResult execute(Model model, Storage storage) throws CommandException {
-        model.setAppPhase(AppPhase.PRE_SESSION);
-        Path session = model.getCurrentSession().get().getFileName();
-        model.setSessionsDirectory(null);
+        Path session = model.closeSession();
         return new ToggleCommandResult(String.format(MESSAGE_SUCCESS, session), ToggleView.SESSION);
     }
 }

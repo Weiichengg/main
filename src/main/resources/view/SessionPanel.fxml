@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="landingPage" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
+            minHeight="500" minWidth="800" prefHeight="500" prefWidth="1300" >
+   <center>
+      <AnchorPane prefHeight="350" prefWidth="800" BorderPane.alignment="CENTER">
+         <ListView fx:id="sessionsList" prefHeight="350" prefWidth="500" />
+      </AnchorPane>
+   </center>
+   <top>
+      <VBox alignment="CENTER" spacing="20" BorderPane.alignment="CENTER">
+         <Label styleClass="welcome_label" text="Welcome to HireLah!" textAlignment="CENTER" />
+         <Label styleClass="instructions_label" text="Please create or select an interview session to start:" />
+      </VBox>
+   </top>
+</BorderPane>

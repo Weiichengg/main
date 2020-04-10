@@ -1,5 +1,9 @@
 package hirelah.storage;
 
+import static hirelah.testutil.TypicalAttributes.getTypicalAttributes;
+import static hirelah.testutil.TypicalInterviewee.getIntervieweeList;
+import static hirelah.testutil.TypicalMetricList.getMetricList;
+import static hirelah.testutil.TypicalQuestionList.getTypicalQns;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -14,6 +18,7 @@ import hirelah.commons.core.GuiSettings;
 import hirelah.commons.exceptions.IllegalValueException;
 import hirelah.model.UserPrefs;
 import hirelah.model.hirelah.AttributeList;
+import hirelah.model.hirelah.Interviewee;
 import hirelah.model.hirelah.IntervieweeList;
 import hirelah.model.hirelah.MetricList;
 import hirelah.model.hirelah.QuestionList;
@@ -30,11 +35,7 @@ public class StorageManagerTest {
      * for testing of the storage.
      */
     private StorageManager storageManager;
-    private IntervieweeList intervieweeList = new IntervieweeList();
-    private AttributeList attributeList = new AttributeList();
-    private QuestionList questionList = new QuestionList();
-    private MetricList metricList = new MetricList();
-    private boolean model = false;
+    private boolean model = true;
 
     /**
      * Setting up of the respective fields
@@ -42,14 +43,6 @@ public class StorageManagerTest {
      */
     @BeforeEach
     public void setUp() throws IllegalValueException {
-        /** populating the different lists with initial values for testing.*/
-        this.attributeList.add("Productivity");
-        this.intervieweeList.addInterviewee("John Doe");
-        this.questionList.add("How can you contribute to the company?");
-        List<String> alias = List.of("Produc");
-        List<Double> weights = List.of(2.0);
-        this.metricList.add("Team player", this.attributeList, alias, weights);
-
         /**Initialising the different components of the Storage*/
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
         IntervieweeStorage intervieweeStorage = new IntervieweeStorage(getTempFilePath("interviewees"));
@@ -85,23 +78,28 @@ public class StorageManagerTest {
 
     @Test
     public void intervieweesReadSave() throws Exception {
-        storageManager.saveInterviewee(intervieweeList);
-        IntervieweeList retrieved = storageManager.readInterviewee(questionList, attributeList, model).get();
-        assertEquals(this.intervieweeList, retrieved);
+        storageManager.saveInterviewee(getIntervieweeList());
+        List<Interviewee> data = getIntervieweeList().getObservableList();
+        for (int i = 0; i < data.size(); i++) {
+            storageManager.saveTranscript(data.get(i));
+        }
+        IntervieweeList retrieved = storageManager.readInterviewee(getTypicalQns(),
+                getTypicalAttributes(), model).get();
+        assertEquals(getIntervieweeList(), retrieved);
     }
 
     @Test
     public void attributesReadSave() throws Exception {
-        storageManager.saveAttribute(attributeList);
+        storageManager.saveAttribute(getTypicalAttributes());
         AttributeList retrieved = storageManager.readAttribute().get();
-        assertEquals(attributeList, retrieved);
+        assertEquals(getTypicalAttributes(), retrieved);
     }
 
     @Test
     public void metricsReadSave() throws Exception {
-        storageManager.saveMetric(this.metricList);
+        storageManager.saveMetric(getMetricList());
         MetricList retrieved = storageManager.readMetric().get();
-        assertEquals(metricList, retrieved);
+        assertEquals(getMetricList(), retrieved);
     }
 
     @Test
@@ -109,6 +107,14 @@ public class StorageManagerTest {
         storageManager.saveModel(model);
         boolean retrieved = storageManager.readModel().get();
         assertEquals(model, retrieved);
+    }
+
+    @Test
+    public void qnsSaveRead() throws Exception {
+        QuestionList questionList = getTypicalQns();
+        storageManager.saveQuestion(questionList);
+        QuestionList retrived = storageManager.readQuestion().get();
+        assertEquals(questionList, retrived);
     }
 
     /** The following tests are to check that StorageManager can return

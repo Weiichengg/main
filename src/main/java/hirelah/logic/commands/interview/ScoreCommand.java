@@ -47,4 +47,12 @@ public class ScoreCommand extends Command {
         }
         return new CommandResult(String.format(MESSAGE_SUCCESS, this.score, attribute));
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof ScoreCommand // instanceof handles nulls
+                && attributePrefix.equals(((ScoreCommand) other).attributePrefix)
+                && score == ((ScoreCommand) other).score);
+    }
 }

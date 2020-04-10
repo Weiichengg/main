@@ -8,6 +8,9 @@ import java.util.regex.Pattern;
 
 import hirelah.logic.commands.Command;
 import hirelah.logic.commands.HelpCommand;
+import hirelah.logic.commands.ListAttributeCommand;
+import hirelah.logic.commands.ListMetricCommand;
+import hirelah.logic.commands.ListQuestionCommand;
 import hirelah.logic.commands.OpenResumeCommand;
 import hirelah.logic.commands.interview.EndCommand;
 import hirelah.logic.commands.interview.RemarkCommand;
@@ -33,9 +36,9 @@ import hirelah.logic.parser.exceptions.ParseException;
 public class InterviewParser {
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
     private static final Pattern SCORE_COMMAND_FORMAT =
-            Pattern.compile(":(?<attribute>[\\p{Alpha}][\\p{Alpha} ]*?)\\s+(?<score>\\d+(\\.\\d+)?)");
+            Pattern.compile(":set (?<attribute>[\\p{Alpha}][\\p{Alpha} ]*?)\\s+(?<score>\\d+(\\.\\d+)?)");
     private static final Pattern START_QUESTION_COMMAND_FORMAT =
-            Pattern.compile(":start q(?<questionNumber>\\d+)");
+            Pattern.compile(":start q(?<questionNumber>.*)");
 
     /**
      * Parses user input into command for execution.
@@ -70,10 +73,19 @@ public class InterviewParser {
         if (userInput.equals(":end")) {
             return new EndCommand();
         }
+        if (userInput.equals(":attributes")) {
+            return new ListAttributeCommand();
+        }
+        if (userInput.equals(":questions")) {
+            return new ListQuestionCommand();
+        }
+        if (userInput.equals(":metrics")) {
+            return new ListMetricCommand();
+        }
         Matcher startQuestionMatcher = START_QUESTION_COMMAND_FORMAT.matcher(userInput.trim());
         if (startQuestionMatcher.matches()) {
-            int questionNumber = Integer.parseInt(startQuestionMatcher.group("questionNumber"));
-            return new StartQuestionCommand(questionNumber);
+            int index = ParserUtil.checkValidQuestionNumber(startQuestionMatcher.group("questionNumber"));
+            return new StartQuestionCommand(index);
         }
         Matcher scoreMatcher = SCORE_COMMAND_FORMAT.matcher(userInput.trim());
         if (scoreMatcher.matches()) {

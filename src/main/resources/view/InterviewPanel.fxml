@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<SplitPane xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
+           dividerPositions="0.5, 0.5" prefHeight="500" prefWidth="1300" >
+    <AnchorPane fx:id="intervieweePane" minHeight="490" minWidth="330" prefHeight="490" prefWidth="330" />
+    <AnchorPane fx:id="transcriptPane" minHeight="490" minWidth="640" prefHeight="490" prefWidth="640">
+        <Label fx:id="emptyTranscriptPaneLabel" styleClass="instructions_label" layoutX="120.0" layoutY="154.0" />
+    </AnchorPane>
+    <AnchorPane minHeight="490" minWidth="280" prefHeight="490" prefWidth="280">
+        <TabPane fx:id="rubricsPane" tabClosingPolicy="UNAVAILABLE">
+            <Tab fx:id="attributesTab" text="Attributes" />
+            <Tab fx:id="questionsTab" text="Questions" />
+            <Tab fx:id="metricsTab" text="Metrics" />
+        </TabPane>
+    </AnchorPane>
+</SplitPane>

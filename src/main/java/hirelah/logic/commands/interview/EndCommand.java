@@ -41,4 +41,10 @@ public class EndCommand extends Command {
         model.endInterview();
         return result;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof EndCommand);
+    }
 }

@@ -4,11 +4,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <ListView fx:id="remarkCardListView" minHeight="200" />
+      <ListView fx:id="remarkCardListView" prefHeight="500" minWidth="380" />
    </center>
-   <top>
-      <Pane minHeight="225.0" BorderPane.alignment="CENTER" />
-   </top>
+   <left>
+      <Pane minWidth="251" BorderPane.alignment="CENTER" />
+   </left>
 </BorderPane>

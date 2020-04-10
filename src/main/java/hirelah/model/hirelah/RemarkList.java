@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 import hirelah.commons.exceptions.IllegalValueException;
@@ -151,4 +152,24 @@ public class RemarkList {
         return startTime;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) { // short circuit if it is the same object
+            return true;
+        } else if (!(other instanceof RemarkList)) {
+            return false;
+        }
+        RemarkList comparison = (RemarkList) other;
+        for (int i = 0; i < questionIndices.length; i++) {
+            if (comparison.questionIndices[i] != questionIndices[i]) {
+                return false;
+            }
+        }
+        return comparison.startTime.equals(startTime)
+                && comparison.remarks.equals(remarks);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(startTime, questionIndices , remarks);
+    }
 }

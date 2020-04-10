@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+
+<VBox id="sessionInformationCard" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
+      minHeight="100" maxHeight="100" minWidth="330" prefWidth="330" >
+    <Label fx:id="sessionName" styleClass="cell_big_label" text="Session: CEO Interview" />
+    <Label fx:id="interviews" text="   - 4 / 20 Interviewed" />
+    <Label fx:id="finaliseStatus" text="   - Rubrics Finalised" />
+</VBox>

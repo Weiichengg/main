@@ -38,8 +38,9 @@ public class JsonSerializableTranscript {
 
     public JsonSerializableTranscript(Transcript transcript) {
         this.attributeToScore = new HashMap<>();
-        transcript.getAttributeToScoreMapView()
-                .forEach((attribute, score) -> this.attributeToScore.put(attribute.toString(), score));
+        transcript.getAttributeToScoreData()
+                .forEach(attributeDoublePair -> this.attributeToScore.put(attributeDoublePair.getKey().toString(),
+                        attributeDoublePair.getValue()));
         this.remarkList = transcript.getRemarkListView().stream()
                 .map(JsonAdaptedRemark::new).collect(Collectors.toList());
         this.startTime = transcript.getStartTime();

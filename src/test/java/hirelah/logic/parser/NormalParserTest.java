@@ -10,12 +10,15 @@ import static hirelah.logic.commands.CommandTestUtility.VALID_COMMAND_FINALISE;
 import static hirelah.logic.commands.CommandTestUtility.VALID_COMMAND_GOTO;
 import static hirelah.logic.commands.CommandTestUtility.VALID_COMMAND_HELP;
 import static hirelah.logic.commands.CommandTestUtility.VALID_COMMAND_INTERVIEW;
-import static hirelah.logic.commands.CommandTestUtility.VALID_COMMAND_LIST;
 import static hirelah.logic.commands.CommandTestUtility.VALID_COMMAND_OPEN;
 import static hirelah.logic.commands.CommandTestUtility.VALID_COMMAND_RESUME;
 import static hirelah.logic.commands.CommandTestUtility.VALID_INTERVIEWEE_JANE;
 import static hirelah.logic.commands.CommandTestUtility.VALID_INTERVIEWEE_JANICE;
 import static hirelah.logic.commands.CommandTestUtility.VALID_NUMBER_1;
+import static hirelah.logic.commands.CommandTestUtility.VALID_PLURAL_ATTRIBUTE;
+import static hirelah.logic.commands.CommandTestUtility.VALID_PLURAL_INTERVIEWEE;
+import static hirelah.logic.commands.CommandTestUtility.VALID_PLURAL_METRIC;
+import static hirelah.logic.commands.CommandTestUtility.VALID_PLURAL_QUESTION;
 import static hirelah.logic.commands.CommandTestUtility.VALID_PROPERTY_INTERVIEWEE;
 import static hirelah.logic.commands.CommandTestUtility.VALID_QUESTION_NUMBER_14;
 import static hirelah.logic.commands.CommandTestUtility.WHITESPACE;
@@ -33,7 +36,10 @@ import hirelah.logic.commands.EditIntervieweeCommand;
 import hirelah.logic.commands.ExitCommand;
 import hirelah.logic.commands.FinaliseCommand;
 import hirelah.logic.commands.HelpCommand;
+import hirelah.logic.commands.ListAttributeCommand;
 import hirelah.logic.commands.ListIntervieweeCommand;
+import hirelah.logic.commands.ListMetricCommand;
+import hirelah.logic.commands.ListQuestionCommand;
 import hirelah.logic.commands.NavigationQuestionCommand;
 import hirelah.logic.commands.OpenReportCommand;
 import hirelah.logic.commands.OpenResumeCommand;
@@ -82,10 +88,27 @@ class NormalParserTest {
     }
 
     @Test
-    void parse_validListCommand_success() throws ParseException {
-        Command result = parser.parseCommand(VALID_COMMAND_LIST
-                + WHITESPACE + VALID_PROPERTY_INTERVIEWEE);
+    void parse_validListAttributeCommand_success() throws ParseException {
+        Command result = parser.parseCommand(VALID_PLURAL_ATTRIBUTE);
+        assertEquals(result, new ListAttributeCommand());
+    }
+
+    @Test
+    void parse_validListIntervieweeCommand_success() throws ParseException {
+        Command result = parser.parseCommand(VALID_PLURAL_INTERVIEWEE);
         assertEquals(result, new ListIntervieweeCommand());
+    }
+
+    @Test
+    void parse_validListMetricCommand_success() throws ParseException {
+        Command result = parser.parseCommand(VALID_PLURAL_METRIC);
+        assertEquals(result, new ListMetricCommand());
+    }
+
+    @Test
+    void parse_validListQuestionCommand_success() throws ParseException {
+        Command result = parser.parseCommand(VALID_PLURAL_QUESTION);
+        assertEquals(result, new ListQuestionCommand());
     }
 
     @Test

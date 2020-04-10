@@ -6,6 +6,8 @@ import java.nio.file.Path;
 import hirelah.commons.exceptions.DataConversionException;
 import hirelah.logic.commands.Command;
 import hirelah.logic.commands.CommandResult;
+import hirelah.logic.commands.ToggleCommandResult;
+import hirelah.logic.commands.ToggleView;
 import hirelah.logic.commands.exceptions.CommandException;
 import hirelah.model.Model;
 import hirelah.model.hirelah.AppPhase;
@@ -41,6 +43,6 @@ public class OpenSessionCommand extends Command {
             throw new CommandException(MESSAGE_FAILED);
         }
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS, sessionName));
+        return new ToggleCommandResult(String.format(MESSAGE_SUCCESS, sessionName), ToggleView.INTERVIEW);
     }
 }

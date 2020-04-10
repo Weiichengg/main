@@ -7,23 +7,22 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="metricCardPane" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
+            prefWidth="250">
       <center>
           <VBox prefHeight="180">
-             <TableView fx:id="attributeToWeight">
+             <TableView fx:id="attributeToWeight" prefWidth="200">
                <columns>
-                 <TableColumn text="Attribute" />
-                 <TableColumn text="Weight" />
+                 <TableColumn text="Attribute" minWidth="130" prefWidth="130"/>
+                 <TableColumn text="Weight" minWidth="60" maxWidth="60"/>
                </columns>
              </TableView>
           </VBox>
       </center>
    <left>
-      <Pane prefWidth="60.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label fx:id="metricName" alignment="CENTER" layoutX="-53.0" layoutY="64.0" prefHeight="53.0"
-                   prefWidth="160.0" text="Label" wrapText="true"/>
-         </children>
-      </Pane>
+       <Pane prefWidth="40.0" BorderPane.alignment="CENTER">
+           <Label fx:id="metricName" alignment="CENTER" layoutX="-63.0" layoutY="75.0" prefHeight="40.0"
+                  prefWidth="160.0" text="Label" wrapText="true"/>
+       </Pane>
    </left>
    </BorderPane>

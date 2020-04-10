@@ -7,7 +7,6 @@ import hirelah.model.hirelah.Question;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
@@ -22,12 +21,8 @@ public class QuestionListPanel extends UiPart<Region> {
     @FXML
     private ListView<Question> textListView;
 
-    @FXML
-    private Label title;
-
     public QuestionListPanel(ObservableList<Question> questionList) {
         super(FXML);
-        title.setText("Questions");
         textListView.setItems(questionList);
         textListView.setCellFactory(listView -> new QuestionListViewCell());
         textListView.getItems().addListener(

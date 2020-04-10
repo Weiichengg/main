@@ -258,8 +258,9 @@ public class IntervieweeList {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof IntervieweeList // instanceof handles nulls
-                && interviewees.equals(((IntervieweeList) other).interviewees)); // state check
+                && observableList.equals(((IntervieweeList) other).observableList)); // state check
     }
+
     @Override
     public int hashCode() {
         return observableList.hashCode();

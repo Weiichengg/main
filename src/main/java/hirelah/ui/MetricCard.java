@@ -5,14 +5,16 @@ import java.util.Map;
 import hirelah.model.hirelah.Attribute;
 import hirelah.model.hirelah.Metric;
 import javafx.beans.property.SimpleObjectProperty;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+
 
 /**
  * An UI component that displays information of an {@code Interviewee}.
@@ -32,7 +34,7 @@ public class MetricCard extends UiPart<Region> {
     public final Metric metric;
 
     @FXML
-    private VBox cardPane;
+    private BorderPane metricCardPane;
 
     @FXML
     private Label metricName;
@@ -67,14 +69,12 @@ public class MetricCard extends UiPart<Region> {
         attributeToWeight.getColumns().set(1, weightColumn);
 
         attributeColumn.prefWidthProperty().bind(attributeToWeight.widthProperty().multiply(0.48));
-        weightColumn.prefWidthProperty().bind(attributeToWeight.widthProperty().multiply(0.48));
+        weightColumn.prefWidthProperty().bind(attributeToWeight.widthProperty().multiply(0.41));
 
         attributeColumn.setResizable(false);
         weightColumn.setResizable(false);
         attributeToWeight.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-
     }
-
 
 }

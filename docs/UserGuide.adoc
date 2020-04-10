@@ -97,7 +97,7 @@ Your interviewees could come from anywhere after all. But do not give blanks or 
 *Commands*
 
 ....
-add interviewee <interviewee> [-aka <alias>]
+add interviewee <full name> [-aka <alias>]
 edit interviewee <interviewee> [-n <new full name>] [-aka <new alias>]
 delete interviewee <interviewee>
 ....
@@ -266,31 +266,48 @@ image::Screenshots/Question.png[]
 
 ==== Switching views
 
-When working on the interviewees, attributes, questions and metrics (more about metrics in <<Metrics>>),
-HireLah! displays the relevant content you are working on. To switch views, HireLah! also provides the list commands.
+When working on the attributes, questions and metrics (more about metrics in <<Metrics>>),
+HireLah! displays the relevant content you are working on on the right side of the application.
+To switch views, HireLah! also provides these commands.
 
 *Command*
 
 ....
-list interviewee
-list attribute
-list question
-list metric
+attributes
+questions
+metrics
 ....
 
-_Action:_ Switches between displaying interviewees, attributes, questions and metrics.
+_Action:_ Switches between displaying attributes, questions and metrics.
 
 _Output:_
 
 ....
-Here is the list of interviewees:
-
 Here is the list of attributes:
 
 Here is the list of questions:
 
 Here is the list of metrics:
 ....
+
+On the left side of the application, all of the interviewees are listed. It will switch to only show several
+best interviewees when the the command is entered by the user. To switch back to list down the interviewees, HireLah!
+provides this command.
+
+*Command*
+
+....
+interviewees
+....
+
+_Action:_ Displays the interviewee list.
+
+_Output:_
+
+....
+Here is the list of interviewees:
+....
+
 
 ==== Finalise Interview Attributes and Questions
 
@@ -793,27 +810,27 @@ interview is incomplete!
 
 *Initialization Phase*
 
-* Add an interviewee: `add interviewee <interviewee> [-aka <alias>]` +
+* Add an interviewee: `add interviewee <full name> [-aka <alias>]` +
 e.g. `add interviewee Jane Doe -aka Doe`
 * Edit an interviewee: `edit interviewee <interviewee> [-n <new full name>] [-aka <new alias>]` +
 e.g. `edit interviewee Jane Doe -n Janice Doe -aka JDoe`
 * Delete an interviewee: `delete interviewee <interviewee>` +
 e.g. `delete interviewee Doe`
-* List interviewees: `list interviewee`
+* List interviewees: `interviewees`
 * Add an attribute: `add attribute <attribute>` +
 e.g. `add attribute teamwork`
 * Edit an attribute: `edit attribute <old attribute> -a <new attribute>` +
 e.g. `edit attribute -a leadership`
 * Delete an attribute: `delete attribute <attribute>` +
 e.g. `delete attribute productivity`
-* List attributes: `list attribute`
+* List attributes: `attributes`
 * Add a question: `add question <question description>` +
 e.g. `add question What are your relevant experiences?`
 * Edit a question: `edit question <question number> -q <edited question>` +
 e.g. `edit question 1 -q What do you hope to accomplish in 5 years?`
 * Delete a question: `delete question <question number>` +
 e.g. `delete question 1`
-* List questions: `list question`
+* List questions: `questions`
 * Upload resume: `upload <interviewee> [-p <path>]`
 * Open resume: `resume <interviewee>`
 
@@ -825,8 +842,11 @@ e.g. `interview Jane Doe`
 e.g. `This guy is good at bluffing`
 * Start a Question: `:start q<question number>` +
 e.g. `:start q1`
-* Score an attribute: `:<attribute> <score>` +
-e.g. `:Agility 10`
+* Score an attribute: `:set <attribute> <score>` +
+e.g. `:set Agility 10`
+* List attributes: `:attributes`
+* List metrics: `:metrics`
+* List questions: `:questions`
 * End: `:end`
 
 *Decision Phase*
@@ -839,6 +859,7 @@ e.g. `goto q4`
 e.g. `goto 30.00`
 * Create a new metric: `add metric <weightage_name>` +
 e.g. `add metric -a ambition -w 0.9 -a leadership -w 0.1`
+* List metrics: `metrics`
 * Find the Best N candidates based on average attribute: `best <no_of_candidates>`
 * Find the Best N candidates based on a particular attribute: `best <no_of_candidates> -a <attribute>` +
 e.g. `best 3 -a strength`

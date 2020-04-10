@@ -3,6 +3,7 @@ package hirelah.logic.commands;
 import java.io.File;
 
 import hirelah.logic.commands.exceptions.CommandException;
+import hirelah.logic.util.CommandUtil;
 import hirelah.model.Model;
 import hirelah.model.hirelah.Interviewee;
 import hirelah.model.hirelah.exceptions.IllegalActionException;
@@ -46,7 +47,7 @@ public class UploadResumeCommand extends Command {
             throw new CommandException(MESSAGE_FILE_NOT_FOUND);
         }
         interviewee.setResume(resume);
-
+        CommandUtil.saveInterviewees(model, storage);
         return new ToggleCommandResult(MESSAGE_SUCCESS, ToggleView.INTERVIEWEE);
     }
 }

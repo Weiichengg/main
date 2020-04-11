@@ -67,7 +67,7 @@ public class JsonSerializableTranscript {
         return transcript;
     }
 
-    /** Loads saved remarks into the given Transcript. */
+    /** Loads saved remarks into the given Transcript.*/
     private void loadRemarks(Transcript transcript, QuestionList questions)
             throws IllegalValueException, IllegalActionException {
         for (JsonAdaptedRemark remark : remarkList) {

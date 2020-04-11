@@ -26,7 +26,10 @@ public class BestCommand extends Command {
     public static final String COMMAND_WORD = "best";
     public static final boolean DESIRED_MODEL_FINALIZED_STATE = true;
     public static final String MESSAGE_PARAM_NOT_FOUND = "The parameter provided: %s is not found.";
+    public static final String MESSAGE_NO_INTERVIEWED_INTERVIEWEE = "There is no interviewee that has been interviewed";
     public static final String MESSAGE_SUCCESS = "Here are the best %s interviewees.";
+    public static final String MESSAGE_SUCCESS_LACK_INTERVIEWEE = "There are only %s interviewed interviewees";
+    public static final String MESSAGE_SUCCESS_WITH_TIE = "There are ties. Here are the best %s interviewees";
     public static final String MESSAGE_FORMAT = COMMAND_WORD + "<number of interviewees> "
             + "[-a <attribute>] [-m <metrics>]";
     public static final String MESSAGE_FUNCTION = ": Finds best candidates from the list.\n";
@@ -72,13 +75,23 @@ public class BestCommand extends Command {
             default:
                 comparator = getOverallComparator(model.getAttributeList());
             }
-            getBestN(comparator, numberOfInterviewees, model);
+            int finalSize = getBest(comparator, numberOfInterviewees, model);
+
+            if (finalSize < numberOfInterviewees) {
+                return new ToggleCommandResult(
+                        String.format(MESSAGE_SUCCESS_LACK_INTERVIEWEE, finalSize), ToggleView.BEST_INTERVIEWEE);
+            } else if (finalSize > numberOfInterviewees) {
+                return new ToggleCommandResult(
+                        String.format(MESSAGE_SUCCESS_WITH_TIE, finalSize), ToggleView.BEST_INTERVIEWEE);
+            }
+            return new ToggleCommandResult(
+                    String.format(MESSAGE_SUCCESS, numberOfInterviewees), ToggleView.BEST_INTERVIEWEE);
+
         } catch (IllegalValueException e) {
             throw new CommandException(String.format(MESSAGE_PARAM_NOT_FOUND, paramPrefix));
         }
 
-        return new ToggleCommandResult(
-                String.format(MESSAGE_SUCCESS, numberOfInterviewees), ToggleView.BEST_INTERVIEWEE);
+
     }
 
     /**
@@ -88,14 +101,20 @@ public class BestCommand extends Command {
      * @param comparator the comparator to compare interviewees.
      * @param size the number of interviewees to fill into bestNInterviewees.
      * @param model The model of the app.
+     * @return The size of the returned inter
      */
-    private void getBestN(Comparator<Interviewee> comparator, int size, Model model) throws IllegalValueException {
+    private int getBest(Comparator<Interviewee> comparator, int size, Model model) throws IllegalValueException,
+            CommandException {
         ObservableList<Interviewee> observableInterviewees = model.getIntervieweeListView();
         ObservableList<IntervieweeToScore> bestNInterviewees = model.getBestNInterviewees();
         bestNInterviewees.clear();
         FilteredList<Interviewee> filtered = new FilteredList<>(observableInterviewees, Interviewee::isInterviewed);
         SortedList<Interviewee> sorted = new SortedList<>(filtered, comparator);
         int n = Math.min(size, sorted.size());
+
+        if (n == 0) {
+            throw new CommandException(MESSAGE_NO_INTERVIEWED_INTERVIEWEE);
+        }
         for (int i = 0; i < n; i++) {
             bestNInterviewees.add(new IntervieweeToScore(sorted.get(i), getScore(sorted.get(i), model)));
         }
@@ -106,6 +125,7 @@ public class BestCommand extends Command {
             lastBest = sorted.get(bestNInterviewees.size());
             bestNInterviewees.add(new IntervieweeToScore(lastBest, getScore(lastBest, model)));
         }
+        return bestNInterviewees.size();
     }
 
     private double getScore(Interviewee interviewee, Model model) throws IllegalValueException {
